@@ -49,7 +49,8 @@ Router::scope('/', function (RouteBuilder $routes) {
      * its action called 'display', and we pass a param to select the view file
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
-    $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
+    //$routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
+    $routes->connect('/', ['controller' => 'LandingPage', 'action' => 'home' ]);
 
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
@@ -74,6 +75,15 @@ Router::scope('/', function (RouteBuilder $routes) {
      */
     $routes->fallbacks(DashedRoute::class);
 });
+
+Router::scope('/admin', function (RouteBuilder $routes) {
+    $routes->scope('/cities', ['controller' => 'Cities'], function (RouteBuilder $routes) {
+        $routes->connect('/', ['action' => 'index']);
+        $routes->fallbacks();
+    });
+    //$routes->connect('/profile', ['controller' => 'Users', 'action' => 'edit']);
+});
+
 
 /**
  * Load all plugin routes. See the Plugin documentation on
