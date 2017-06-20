@@ -17,7 +17,8 @@
                     <p class="text-center featured-image-block-title"><?php echo h($city['seo_title'])?></p>
                 </a>
             </div>
-        <?php endforeach;?>
+        <?php endforeach; ?>
+
         <!--
         <div class="featured-image-block column">
             <a href="/city-page.html">
