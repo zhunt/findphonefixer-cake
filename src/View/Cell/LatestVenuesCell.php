@@ -24,5 +24,11 @@ class LatestVenuesCell extends Cell
      */
     public function display()
     {
+
+        $this->loadModel('Venues');
+
+        $venues = $this->Venues->find('homepageVenues')->order('Venues.created')->limit(4);
+
+        $this->set('venues', $venues);
     }
 }
