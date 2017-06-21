@@ -52,6 +52,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     //$routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
     $routes->connect('/', ['controller' => 'LandingPage', 'action' => 'home' ]);
 
+    $routes->connect('/city/:slug', ['controller' => 'LandingPage', 'action' => 'city' ], [ 'pass' => ['slug'] ]);
+
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */

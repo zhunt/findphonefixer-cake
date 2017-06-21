@@ -21,6 +21,16 @@ class LandingPageController extends AppController
     }
 
 
+    public function city($slug = null)
+    {
+        $this->loadModel('Cities');
+
+        $city = $this->Cities->findBySlug($slug)->first();  //debug($city );
+
+        $this->set(compact('city'));
+        $this->set('_serialize', ['city']);
+    }
+
     /**
      * Index method
      *

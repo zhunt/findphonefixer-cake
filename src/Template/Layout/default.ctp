@@ -23,7 +23,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?echo // $cakeDescription ?>: <?= $this->fetch('title') ?>
+       <?= $this->fetch('title') ?>
     </title>
     <?= $this->Html->meta('icon') ?>
 
@@ -36,6 +36,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/app.css">
+
+    <!-- inline CSS code -->
+    <?php echo $this->fetch('inlineCSS'); ?>
 
 </head>
 <body>
