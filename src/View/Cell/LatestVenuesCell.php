@@ -17,6 +17,8 @@ class LatestVenuesCell extends Cell
      */
     protected $_validCellOptions = [];
 
+    public $helpers = ['PhoneNumber'];
+
     /**
      * Default display method.
      *
@@ -27,7 +29,7 @@ class LatestVenuesCell extends Cell
 
         $this->loadModel('Venues');
 
-        $venues = $this->Venues->find('homepageVenues')->order('Venues.created')->limit(4);
+        $venues = $this->Venues->find('homepageVenues')->order('Venues.created')->limit(8);
 
         $this->set('venues', $venues);
     }

@@ -15,13 +15,26 @@
                 <div class="card align-stretch store-card">
                     <a href="<?php echo $venue['slug']?>">
                         <div class="card-divider text-center ">
-                            <h4><?php echo h($venue['name']);?></h4>
+                            <h4><?php echo h($venue['name']);?>
+                                <?php if (!empty($venue['sub_name']) ): ?>
+                                    <small class="nowrap"><?php echo h($venue['sub_name']);?></small>
+                                <?php endif; ?>
+                            </h4>
                         </div>
-                        <img class="card-image" src="/assets/img/placeholder-555.png">
+                        <?php if (!empty($venue['photos'])): ?>
+                            <img class="card-image" src="<?php echo $venue['photos'] ?>">
+                        <?php else: ?>
+                            <img class="card-image" src="/assets/img/placeholder-555.png">
+                        <?php endif; ?>
                         <div class="card-section text-center">
                             <p>
-                                <?php echo h($venue['address']);?><br>
-                                <?php echo h($venue['phone']);?>
+                                <?php if (!empty($venue['display_address'])):?>
+                                    <?php echo h($venue['display_address']);?>
+                                <?php else: ?>
+                                    <?php echo h($venue['address']);?>
+                                <?php endif; ?>
+                                <br>
+                                <?php echo h( $this->PhoneNumber->firstNumber($venue['phone']) );?>
                             </p>
                         </div>
                     </a>
