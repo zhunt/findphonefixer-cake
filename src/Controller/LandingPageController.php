@@ -25,7 +25,16 @@ class LandingPageController extends AppController
     {
         $this->loadModel('Cities');
 
-        $city = $this->Cities->findBySlug($slug)->first();  //debug($city );
+        $city = $this->Cities->findBySlug($slug)
+            ->contain([
+                'Countries' => ['fields' => ['name'] ],
+                'Provinces' => ['fields' => ['name'] ],
+                'CityRegions' => [ 'sort' => 'display_name, name', 'fields' => [ 'city_id', 'name', 'display_name', 'slug'] ]
+            ])
+            ->first(); //debug($city->toArray() );
+
+
+        // TODO: make services, chains dependent on what venues in have assigned to them
 
         $this->set(compact('city'));
         $this->set('_serialize', ['city']);

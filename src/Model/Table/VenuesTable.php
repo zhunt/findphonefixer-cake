@@ -232,7 +232,8 @@ class VenuesTable extends Table
     /* custom find methods */
 
     public function findHomepageVenues(Query $query) {
-        return $query->where( [ 'Venues.flag_published' => true ]);
+        return $query->where( [ 'Venues.flag_published' => true ])
+            ->contain( ['Cities' => ['fields' => ['id', 'name'] ], 'VenueTypes' => ['fields' => ['id', 'VenueTypesVenues.venue_id', 'name'] ] ] );
     }
 
 }

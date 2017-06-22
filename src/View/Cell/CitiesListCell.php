@@ -25,7 +25,7 @@ class CitiesListCell extends Cell
     public function display()
     {
         $this->loadModel('Cities');
-        $cities = $this->Cities->find('homepageCities')->order('Cities.name');//->toArray();
+        $cities = $this->Cities->find('homepageCities')->order('Cities.name');
 
         $this->set('cities', $cities);
     }

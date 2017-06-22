@@ -113,6 +113,8 @@ class CitiesTable extends Table
 
     public function findHomepageCities(Query $query)
     {
-        return $query->where( [ 'Cities.flag_show_homepage' => true ]);
+        return $query
+            ->where( [ 'Cities.flag_show_homepage' => true ])
+            ->contain(['Countries' => ['fields' => ['name'] ] ] );
     }
 }

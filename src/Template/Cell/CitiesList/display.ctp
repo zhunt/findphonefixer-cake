@@ -14,7 +14,7 @@
                     <?php else: ?>
                         <img src="/assets/img/city_default.jpg"/>
                     <?php endif;?>
-                    <p class="text-center featured-image-block-title"><?php echo h($city['seo_title'])?></p>
+                    <p class="text-center featured-image-block-title"><?php echo h($city['name'] . ', ' . $city->country['name'] )?></p>
                 </a>
             </div>
         <?php endforeach; ?>

@@ -24,13 +24,23 @@ class LatestVenuesCell extends Cell
      *
      * @return void
      */
-    public function display()
+    public function display( $cityId = null)
     {
 
         $this->loadModel('Venues');
 
-        $venues = $this->Venues->find('homepageVenues')->order('Venues.created')->limit(8);
+        $showCityName = false;
+
+        $venues = $this->Venues->find('homepageVenues')->order('Venues.created')->limit(4);
+
+        if ( !empty($cityId) ) {
+            $venues->where([ 'Venues.city_id' => $cityId ]);
+            $showCityName = true;
+        }
+
+        // debug($venues->toArray() );
 
         $this->set('venues', $venues);
+        $this->set('showCityName', $showCityName);
     }
 }
