@@ -220,3 +220,7 @@ Type::build('timestamp')
 if (Configure::read('debug')) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
 }
+
+// Sitewide
+
+Configure::write('wpRestApi', 'http://findphonefixer.com/blog/wp-json/wp/v2/posts');

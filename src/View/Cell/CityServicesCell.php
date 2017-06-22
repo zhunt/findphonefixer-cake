@@ -24,6 +24,8 @@ class CityServicesCell extends Cell
      */
     public function display( $cityId = null, $cityName = null)
     {
+        // TODO: make list based on venue's services/products
+
         $this->loadModel('Services');
         $this->loadModel('Products');
 

@@ -80,7 +80,7 @@ $this->assign('meta_description', $city['seo_desc']);
 <!-- blogs / lists for this city -->
 
 <!-- partials/feature-blogs.html start -->
-<?php $cell = $this->cell('LatestBlogs', ['city' => 1 ]); echo $cell; ?>
+<?php $cell = $this->cell('LatestBlogs', [ 'searchParams' => [ 'search' => 'tips', 'orderby' => 'relevance'] ]); echo $cell; ?>
 <!-- partials/feature-blogs.html end -->
 
 

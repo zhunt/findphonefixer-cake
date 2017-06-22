@@ -6,6 +6,7 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
+use Cake\Core\Configure;
 use Cake\Http\Client;
 
 
@@ -91,16 +92,28 @@ class ArticlesTable extends Table
     }
 
     /* */
-    public function  getLatestBlogs() {
+    public function  getLatestBlogs( $searchParams = null ) {
         $http = new Client();
 
-        $response = $http->get('http://findphonefixer.com/blog/wp-json/wp/v2/posts', [ /*'search' => 'android', */ 'orderby' => 'date', 'per_page' => 3, '_embed' => true ]);
+       // $searchParams = ['search' => 'tips'];
+
+        $wpParams = [
+            'orderby' => 'date',
+            'per_page' => 3,
+            '_embed' => true ];
+
+        if ( !empty($searchParams) && is_array($searchParams) ) {
+            // should allow overwriting other fields (orderby, etc.) if passed in $searchParams
+            $wpParams = array_merge($wpParams, $searchParams );
+        }
+
+        $response = $http->get( Configure::read('wpRestApi'), $wpParams);
 
         $wpData = json_decode( $response->body(), true );
 
         $data = [];
 
-        if ($wpData) {
+        if (!empty($wpData)) {
             foreach( $wpData as $i => $row ) {
                 $data[$i] = [
                     'date' =>   $row['date'],
@@ -108,8 +121,8 @@ class ArticlesTable extends Table
                     'title' =>  $row['title']['rendered'],
                     'text'  =>  strip_tags($row['excerpt']['rendered']),
                     'image' => $row['_embedded']['wp:featuredmedia']['0']['media_details']['sizes']['thumbnail']['source_url']
-
                 ];
+                // TODO: update Articles database table here
             }
         }
 

@@ -25,6 +25,7 @@ class CityChainsCell extends Cell
 
     public function display( $cityId = null, $cityName = null)
     {
+        // TODO: make list based on venue's chains
         $this->loadModel('Chains');
 
         $cityChains = $this->Chains->find('list', ['keyField' => 'slug','valueField' => 'name'] )->order('name');

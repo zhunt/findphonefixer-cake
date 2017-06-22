@@ -25,7 +25,7 @@ class LatestBlogsCell extends Cell
      *
      * @return void
      */
-    public function display()
+    public function display( $searchParams = null)
     {
 
         // http://findphonefixer.com/blog/wp-json/wp/v2/posts?search=android&orderby=date&_embed&per_page=3
@@ -36,7 +36,7 @@ class LatestBlogsCell extends Cell
 
         $this->loadModel('Articles');
 
-        $this->set('blogs', $this->Articles->getLatestBlogs() );
+        $this->set('blogs', $this->Articles->getLatestBlogs( $searchParams ) );
 
     }
 }
