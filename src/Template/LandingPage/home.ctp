@@ -1,4 +1,8 @@
 <!-- index.html -->
+<?php
+$this->assign('title', 'Find Phone Fixer: Cell Phone Repair Stores Near You');
+$this->assign('meta_description', 'Where to find cell phone repair, iPhone, Samsung and other mobile phone repair stores near you, plus unlocking and accessories for your phone.');
+?>
 
 <!-- partials/header-1.html start -->
 <section class="header">

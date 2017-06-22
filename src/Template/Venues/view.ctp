@@ -3,7 +3,490 @@
   * @var \App\View\AppView $this
   * @var \App\Model\Entity\Venue $venue
   */
+
+//debug($venue->toArray());
+
+$this->assign('title', $venue['seo_title']);
+$this->assign('meta_description', $venue['seo_desc']);
+
 ?>
+
+
+
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Phone Fixer</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/app.css">
+
+    <style type="text/css">
+        /* TEMP */
+        /*
+      body{
+      font-family: 'Droid Sans', 'Helvetica', Arial, sans-serif;
+      margin:5px;
+    }
+    #map{
+      display: block;
+      width: 95%;
+      height: 350px;
+      margin: 0 auto;
+      -moz-box-shadow: 0px 5px 20px #ccc;
+      -webkit-box-shadow: 0px 5px 20px #ccc;
+      box-shadow: 0px 5px 20px #ccc;
+    }
+    #map.large{
+      height:500px;
+    }
+    */
+
+
+    </style>
+
+</head>
+<body>
+
+<!-- profile.html -->
+<!-- partials/header-inside.html start -->
+<section class="header">
+    <div class="row">
+        <div class="columns large-12 align-self-bottom align-self-middle">
+            <h4><a href="/"><img src="/assets/img/findphonefixer-logo.png" title="FindPhoneFixer.com" alt="Find Phone Fixer logo">
+                    FindPhoneFixer</a></h4>
+        </div>
+    </div>
+</section>
+
+<section class="hero inside-page">
+    <div class="columns row search-form">
+        <div class="input-group">
+            <input class="input-group-field" type="text" placeholder="Enter a place or city to search"/>
+            <div class="input-group-button">
+                <input type="submit" class="button" value="Search">
+            </div>
+        </div>
+    </div>
+</section>
+<!-- partials/header-inside.html end -->
+
+
+
+
+<section class="location-path">
+    <div class="row">
+        <div class="column ">
+            <div class="card">
+                <div class="card-section text-left">
+                    <nav aria-label="You are here:" role="navigation" class="">
+                        <ul class="breadcrumbs">
+                            <li><a href="/index.html">Home</a></li>
+                            <li><a href="#">Canada</a></li>
+                            <li><a href="/city-page.html">Toronto</a></li>
+                            <li><a href="#">Downtown</a></li>
+                            <li>iFixIt Repairs</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="row columns venue-title">
+    <div class="card">
+        <div class="card-section text-left">
+            <h1>iFixIt Repairs
+                <small>Eaton Centre</small>
+            </h1>
+
+            <p><b>Downtown Toronto | Phone Repairs</b></p>
+        </div>
+
+    </div>
+</div>
+
+<div class="row columns ablock text-center">
+    <!-- add block -->
+    <div class="callout">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- bartenderTraining-adblock1 -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-5569648086666006"
+             data-ad-slot="5270749504"
+             data-ad-format="auto"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+</div>
+
+
+<div class="row">
+
+    <div class="columns small-12 medium-4 flex-container ">
+        <div class="card profile-picture">
+            <img src="/assets/img/placeholder-555.png" title="Photo: copyright owner">
+            <div class="card-section text-center">
+                <p>
+                    <small><i>Photo: provided by iFixSite</i></small>
+                </p>
+                <p><b>20 Yonge St, Toronto, ON M5B 2H1, 4th floor</b></p>
+                <p><b>(416)123-1234</b></p>
+                <p><b>www.iFixSite.com</b></p>
+
+                <button type="button" style="cursor: pointer" data-toggle="example-dropdown"><p>More...</p></button>
+                <div class="dropdown-pane" id="example-dropdown" data-dropdown data-auto-focus="true">
+                    <p><b>Facebook</b></p>
+                    <p><b>Twitter</b></p>
+                    <p><b>Toll-Free</b></p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="columns small-12 medium-8 flex-container">
+        <div class="card venue-description">
+            <div class="card-section">
+                <h4>About iFixIt Repairs</h4>
+                <p>NCIX is a computer shop on 64th Ave. north of the Langley Bypass. in Langley, BC. NCIX sells a wide
+                    range of laptops, computers, pc parts, accessories,
+                    and build custom computer systems.</p>
+
+                <b>Services:</b>
+                <p>
+                    <span class="label">Screen Repair</span>
+                    <span class="label">Battery Replacment</span>
+                </p>
+
+                <b>Products</b>
+                <p>
+                    <span class="label">Phone Cases</span>
+                </p>
+
+                <b>Brands</b>
+                <p>
+                    <span class="label">Sony</span>
+                    <span class="label">Google</span>
+                    <span class="label">Samsung</span>
+                </p>
+
+                <b>Languages Spoken</b>
+                <p>
+                    <span class="label">Korean</span>
+                </p>
+
+            </div>
+
+            <div class="card-section">
+                <hr>
+                <div class="row unstack-medium">
+                    <div class="column">
+                        <i>Last updated: June 2016</i>
+                    </div>
+                    <div class="column text-right shrink">
+                        <b><a href="#" data-open="reportErrorModal">Report Error</a></b>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="columns small-12 medium-8">
+        <div class="card profile-map">
+            <script>
+                var geoCord = {
+                    "latt": 43.653679,
+                    "long": -79.380112,
+                    "venue_name": "iFixSite",
+                    "venue_address": "1158 Kennedy Rd."
+                };
+            </script>
+            <div class="card-section text-center">
+                <div id="profile-map">MAP</div>
+                <p><b>220 Yonge St, Toronto, ON M5B 2H1, 4th floor</b></p>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- hours -->
+    <div class="columns small-12 large-4 medium-4">
+        <div class="card venue-hours">
+
+            <div class="card-divider ">
+                <h4><i class="fa fa-clock-o"></i> Hours</h4>
+            </div>
+
+            <div class="row large-unstack medium-unstack card-section text-center">
+                <div class="column"><p><b>Mon</b><br>9:30am - 7:00pm </p></div>
+                <div class="column"><p><b>Tue</b><br>10:30am - 8:00pm </p></div>
+                <div class="column"><p class="selected"><b>Wed</b><br>10:30am - 8:00pm</p></div>
+                <div class="column"><p><b>Thu</b><br>10:30am - 8:00pm </p></div>
+                <div class="column"><p><b>Fri</b><br>9:30am - 7:00pm </p></div>
+                <div class="column"><p><b>Sat</b><br>9:30am - 7:00pm </p></div>
+                <div class="column"><p><b>Sun</b><br>Closed </p></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="row">
+
+    <div class="columns small-12 large-4">
+        <!-- spoonsored -->
+        <div class="callout">
+            <p class="text-center"><b>Sponsors:</b></p>
+            <div class="row align-middle medium-unstack"> <!-- align-middle -->
+                <div class="columns text-center">
+                    <a href="http://www.kqzyfj.com/g7116y1A719PXSQVXZYPRRRTZZVX" target="_blank">
+                        <img src="http://www.awltovhc.com/2d100uuymsqBJECHJLKBDDDFLLHJ" alt="" border="0"/></a>
+                </div>
+
+                <div class="columns text-center">
+                    <a href="http://www.jdoqocy.com/r779ar-xrzEMHFKMONEGFMOIHNO?cm_mmc=CJ-_-4076811-_-7205798-_-99designs%20logo%20-%20125x125"
+                       target="_blank">
+                        <img src="http://www.awltovhc.com/2h103kpthnl6E97CEGF687EGA9FG" alt="99Designs.com" border="0"/></a>
+                </div>
+
+                <div class="columns text-center">
+                    <a href="http://www.tkqlhce.com/ks82biroiq5D86BDFE578D6DE86" target="_blank">
+                        <img src="http://www.tqlkg.com/rd65ax0pvtEMHFKMONEGHMFMNHF" alt="" border="0"/></a>
+                </div>
+            </div>
+        </div>
+        <!-- spoonsored end -->
+
+    </div>
+
+
+    <div class="columns small-12 large-8">
+        <!-- nearby -->
+
+        <div class="card nearby-venues">
+
+            <div class="card-divider ">
+                <h4><i class="fa fa-map-o"></i> Nearby</h4>
+            </div>
+            <div class="card-section text-left">
+
+                <table width="100%">
+                    <tbody>
+                    <tr>
+                        <td><h5><a href="/company/tech-direct-scarborough" title="Tech Direct ">Tech Direct</a></h5>
+                            1158 Kennedy Rd. | <em>Computer Store</em>
+                        </td>
+                        <td>173m</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5><a href="/company/future_shop_toronto-kennedy" title="Future Shop Scarborough">Future
+                                    Shop</a></h5>
+                            1141 Kennedy Rd
+                            | <em>Electronics </em>
+                        </td>
+                        <td>235m</td>
+                    </tr>
+                    <tr>
+                        <td><h5><a href="/company/tech-source-scarborough" title="Tech Source ">Tech Source</a></h5>
+                            193 Shropshire Dr.
+                            | <em>Computer Store</em>
+                        </td>
+                        <td>411m</td>
+                    </tr>
+                    <tr>
+                        <td><h5><a href="/company/canada-computers-scarborough" title="Canada Computers (Scarborough)">Canada
+                                    Computers</a></h5>
+                            1306 Kennedy Rd.
+                            | <em>Computer Store</em>
+                        </td>
+                        <td>609m</td>
+                    </tr>
+                    <tr>
+                        <td><h5><a href="/company/factory-direct-scarborough" title="Factory Direct (Scarborough)">Factory
+                                    Direct</a></h5>
+                            1399 Kennedy Rd.
+                            | <em>Computer Store</em>
+                        </td>
+                        <td>1.1km</td>
+                    </tr>
+                    <tr>
+                        <td><h5><a href="/company/ez_connect_solutions" title="EZ Connect Solutions ">EZ Connect
+                                    Solutions</a></h5>
+                            1158 Warden Ave.
+                            | <em>Phones and Accessories</em>
+                        </td>
+                        <td>1.7km</td>
+                    </tr>
+                    <tr>
+                        <td><h5><a href="/company/best_buy_toronto-scarborough-town"
+                                   title="Best Buy Mobile Scarborough Town Centre">Best Buy Mobile</a></h5>
+                            300 Borough Dr.
+                            | <em>Phones and Accessories</em>
+                        </td>
+                        <td>3km</td>
+                    </tr>
+                    <tr>
+                        <td><h5><a href="/company/mpt-computers" title="MPT Computers ">MPT Computers</a></h5>
+                            2370 Midland Ave., Unit A10
+                            | <em>Computer Store</em>
+                        </td>
+                        <td>3km</td>
+                    </tr>
+                    <tr>
+                        <td><h5><a href="/company/best-buy-scarborough" title="Best Buy (Scarborough)">Best Buy</a></h5>
+                            480 Progress Ave.
+                            | <em>Computer Store</em>
+                        </td>
+                        <td>3km</td>
+                    </tr>
+                    <tr>
+                        <td><h5><a href="/company/best_buy_toronto-ashtonbee" title="Best Buy Warden">Best Buy</a></h5>
+                            50 Ashtonbee Rd., Unit 2
+                            | <em>Electronics</em>
+                        </td>
+                        <td>3.1km</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- nearby -->
+<div class="row columns ablock text-center">
+    <!-- add block -->
+    <div class="callout">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- bartenderTraining-adblock1 -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-5569648086666006"
+             data-ad-slot="5270749504"
+             data-ad-format="auto"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+</div>
+
+<hr>
+
+<div class="reveal" id="reportErrorModal" data-reveal>
+
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+
+    <h3>Report Error</h3>
+
+    <form data-abide novalidate>
+        <div data-abide-error class="alert callout" style="display: none;">
+            <p><i class="fi-alert"></i> There are some errors in your form.</p>
+        </div>
+
+        <div class="row">
+            <div class="small-12 columns">
+                <input type="checkbox" name="pokemon" value="closed" id="bizClosed"><label for="bizClosed">Business
+                    Closed</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="small-12 columns">
+                <input type="checkbox" name="pokemon" value="hoursWrong" id="hoursWrong"><label for="hoursWrong">Hours
+                    Wrong</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="small-12 columns">
+                <textarea required pattern="alpha_numeric" placeholder="Hours..."></textarea>
+            </div>
+            <p class="help-text" id="">Please Enter correct hours if you know them.</p>
+        </div>
+
+        <div class="row">
+            <div class="small-12 columns">
+                <input type="checkbox" name="pokemon" value="addressWrong" id="addressWrong"><label for="addressWrong">Address
+                    Wrong</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 columns">
+                <textarea required pattern="alpha_numeric" placeholder="Hours..."></textarea>
+            </div>
+            <p class="help-text" id="">Please Enter correct address if you know it.</p>
+        </div>
+
+        <div class="row">
+            <div class="small-12 columns">
+                <input type="checkbox" name="pokemon" value="contactWrong" id="contactWrong"><label for="contactWrong">Contact
+                    Information Wrong</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 columns">
+                <textarea required pattern="alpha_numeric" placeholder="Hours..."></textarea>
+            </div>
+            <p class="help-text" id="">Please Enter correct contact info. if you know it.</p>
+        </div>
+
+
+        <div class="row">
+            <div class="small-12 columns">
+                <input type="checkbox" name="pokemon" value="otherWrong" id="otherWrong"><label
+                        for="otherWrong">Other</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 columns">
+                    <textarea required pattern="alpha_numeric" rows="5"
+                              placeholder="Please enter a description of problem"></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <fieldset class="large-6 columns">
+                <button class="button" type="submit" value="Submit">Submit</button>
+            </fieldset>
+            <fieldset class="large-6 columns">
+                <button class="button" type="reset" value="Reset">Reset</button>
+            </fieldset>
+        </div>
+    </form>
+</div>
+
+
+<!-- footer -->
+<!-- partials/findphonefixer-footer.html start -->
+<?php echo $this->element('footer'); ?>
+<!-- partials/findphonefixer-footer.html end -->
+
+
+
+<?php /* ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -383,3 +866,5 @@
         <?php endif; ?>
     </div>
 </div>
+
+<?php */ ?>

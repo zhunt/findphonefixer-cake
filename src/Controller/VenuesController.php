@@ -36,11 +36,14 @@ class VenuesController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($slug = null)
     {
-        $venue = $this->Venues->get($id, [
-            'contain' => ['Cities', 'Countries', 'Provinces', 'CityRegions', 'Malls', 'Chains', 'Amenities', 'Brands', 'Cuisines', 'Languages', 'Products', 'Services', 'VenueTypes']
-        ]);
+
+        $venue = $this->Venues->findBySlug($slug)
+            ->contain(['Cities', 'Countries', 'Provinces', 'CityRegions', 'Malls', 'Chains', 'Amenities', 'Brands', 'Cuisines', 'Languages', 'Products', 'Services', 'VenueTypes'])
+            ->where(['Venues.flag_published' => true ])
+            ->first();
+
 
         $this->set('venue', $venue);
         $this->set('_serialize', ['venue']);

@@ -22,16 +22,15 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-       <?= $this->fetch('title') ?>
-    </title>
+    <title><?php echo trim($this->fetch('title')); ?></title>
     <?= $this->Html->meta('icon') ?>
+    <?= $this->Html->meta('description', trim($this->fetch('meta_description')) ); ?>
 
     <?php // $this->Html->css('base.css') ?>
     <?php // $this->Html->css('cake.css') ?>
 
     <?= $this->fetch('meta') ?>
-    <?= $this->fetch('css') ?>
+    <?php // echo $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">

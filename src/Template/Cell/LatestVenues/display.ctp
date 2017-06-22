@@ -22,7 +22,7 @@
 
             <div class="column small-12 large-3 medium-6 flex-container">
                 <div class="card align-stretch store-card">
-                    <a href="<?php echo $venue['slug']?>">
+                    <a href="<?php echo '/venue/' . $venue['slug']?>">
                         <div class="card-divider text-center ">
                             <h4><?php echo h($venue['name']);?>
                                 <?php if (!empty($venue['sub_name']) ): ?>
