@@ -33,4 +33,13 @@ class CityRegion extends Entity
         '*' => true,
         'id' => false
     ];
+
+    /* virtual fields */
+    protected function _getPreferedName()
+    {
+        // returns the display_name if filled in, just name if not
+        return (!empty($this->_properties['display_name']) ) ? $this->_properties['display_name'] : $this->_properties['name'];
+    }
+
+
 }

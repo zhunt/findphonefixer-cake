@@ -27,7 +27,7 @@ class PhoneNumberHelper extends Helper
         if ( is_array($json) && !empty($json)) {
             //debug($json);
             if (isset($json['phone'])) {
-                return($json['phone']);
+                return($json['phone'] . '**** STOP USING *****');
             }
         }
         // TODO, just single number ?

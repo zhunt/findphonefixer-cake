@@ -31,8 +31,11 @@ $this->assign('meta_description', 'Where to find cell phone repair, iPhone, Sams
 <section>
     <div class="row column">
         <h1>Find Phone Fixer</h1>
+
+        <h5>FindPhoneFixer lets you search for phone repair stores near you.</h5>
     </div>
 </section>
+
 
 <!-- Cities list -->
 <section class="other-cities-list">
@@ -41,16 +44,24 @@ $this->assign('meta_description', 'Where to find cell phone repair, iPhone, Sams
     <!-- partials/cities-block-grid.html end -->
 </section>
 
+<hr>
+
+<?php echo $this->element('adblockResponsive'); ?>
+
 <!-- Blog -->
 
 <!-- partials/feature-blogs.html start -->
 <?php $cell = $this->cell('LatestBlogs'); echo $cell; ?>
 <!-- partials/feature-blogs.html end -->
 
+<?php echo $this->element('adblockResponsive'); ?>
+
 <!-- latest -->
 <!-- partials/city-featured.html start -->
 <?php $cell = $this->cell('LatestVenues'); echo $cell; ?>
 <!-- partials/city-featured.html end -->
+
+<?php echo $this->element('adblockResponsive'); ?>
 
 <!-- footer -->
 

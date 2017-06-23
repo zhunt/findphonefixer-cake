@@ -4,78 +4,16 @@
   * @var \App\Model\Entity\Venue $venue
   */
 
-//debug($venue->toArray());
+debug($venue->toArray());
 
 $this->assign('title', $venue['seo_title']);
 $this->assign('meta_description', $venue['seo_desc']);
 
 ?>
-
-
-
-<!doctype html>
-<html class="no-js" lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find Phone Fixer</title>
-
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/app.css">
-
-    <style type="text/css">
-        /* TEMP */
-        /*
-      body{
-      font-family: 'Droid Sans', 'Helvetica', Arial, sans-serif;
-      margin:5px;
-    }
-    #map{
-      display: block;
-      width: 95%;
-      height: 350px;
-      margin: 0 auto;
-      -moz-box-shadow: 0px 5px 20px #ccc;
-      -webkit-box-shadow: 0px 5px 20px #ccc;
-      box-shadow: 0px 5px 20px #ccc;
-    }
-    #map.large{
-      height:500px;
-    }
-    */
-
-
-    </style>
-
-</head>
-<body>
-
 <!-- profile.html -->
 <!-- partials/header-inside.html start -->
-<section class="header">
-    <div class="row">
-        <div class="columns large-12 align-self-bottom align-self-middle">
-            <h4><a href="/"><img src="/assets/img/findphonefixer-logo.png" title="FindPhoneFixer.com" alt="Find Phone Fixer logo">
-                    FindPhoneFixer</a></h4>
-        </div>
-    </div>
-</section>
-
-<section class="hero inside-page">
-    <div class="columns row search-form">
-        <div class="input-group">
-            <input class="input-group-field" type="text" placeholder="Enter a place or city to search"/>
-            <div class="input-group-button">
-                <input type="submit" class="button" value="Search">
-            </div>
-        </div>
-    </div>
-</section>
+<?php echo $this->element('insideHeader'); ?>
 <!-- partials/header-inside.html end -->
-
-
-
 
 <section class="location-path">
     <div class="row">
@@ -84,11 +22,15 @@ $this->assign('meta_description', $venue['seo_desc']);
                 <div class="card-section text-left">
                     <nav aria-label="You are here:" role="navigation" class="">
                         <ul class="breadcrumbs">
-                            <li><a href="/index.html">Home</a></li>
-                            <li><a href="#">Canada</a></li>
-                            <li><a href="/city-page.html">Toronto</a></li>
-                            <li><a href="#">Downtown</a></li>
-                            <li>iFixIt Repairs</li>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/country/<?php echo $venue->country->slug;?>"><?php echo h($venue->country->name); ?></a></li>
+                            <li><a href="/city/<?php echo $venue->city->slug;?>"><?php echo h($venue->city->name); ?></a></li>
+                            <?php
+                                if (!empty($venue->city_region->prefered_name )){
+                                    echo '<li><a href="/city_region/' . $venue->city_region->slug . '">' . $venue->city_region->prefered_name . '</a></li>';
+                                }
+                            ?>
+                            <li><?php echo h($venue['name']); ?></li>
                         </ul>
                     </nav>
                 </div>
@@ -100,32 +42,29 @@ $this->assign('meta_description', $venue['seo_desc']);
 <div class="row columns venue-title">
     <div class="card">
         <div class="card-section text-left">
-            <h1>iFixIt Repairs
-                <small>Eaton Centre</small>
-            </h1>
+            <h1><?php
+                echo h($venue['name']);
+                if ( !empty($venue['sub_name'])) {
+                   echo ' <small class="no-wrap">'. h($venue['sub_name']) .'</small>';
+                }
+            ?></h1>
 
-            <p><b>Downtown Toronto | Phone Repairs</b></p>
+            <p><b>
+                    <?php
+                        if ( !empty($venue->city_region->prefered_name) ) {
+                            echo h($venue->city_region->prefered_name);
+                        } else {
+                            echo h($venue->city->name);
+                        }
+                    ?>
+                    |
+                    <?php echo h($this->Venue->getVenuesTypes($venue)); ?></b></p>
         </div>
 
     </div>
 </div>
 
-<div class="row columns ablock text-center">
-    <!-- add block -->
-    <div class="callout">
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <!-- bartenderTraining-adblock1 -->
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-5569648086666006"
-             data-ad-slot="5270749504"
-             data-ad-format="auto"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-</div>
-
+<?php echo $this->element('adblockResponsive'); ?>
 
 <div class="row">
 
@@ -134,11 +73,11 @@ $this->assign('meta_description', $venue['seo_desc']);
             <img src="/assets/img/placeholder-555.png" title="Photo: copyright owner">
             <div class="card-section text-center">
                 <p>
-                    <small><i>Photo: provided by iFixSite</i></small>
+                    <small><i>Photo: provided by <?php echo h($venue['name']);?></i></small>
                 </p>
-                <p><b>20 Yonge St, Toronto, ON M5B 2H1, 4th floor</b></p>
-                <p><b>(416)123-1234</b></p>
-                <p><b>www.iFixSite.com</b></p>
+                <p><b><?php echo h($venue->prefered_address);?></b></p>
+                <p><b><?php echo h($this->Venue->getFirstPhonenumber($venue));?></b></p>
+                <p><b><?php echo h($this->Venue->getFirstWebsite($venue));?></b></p>
 
                 <button type="button" style="cursor: pointer" data-toggle="example-dropdown"><p>More...</p></button>
                 <div class="dropdown-pane" id="example-dropdown" data-dropdown data-auto-focus="true">
@@ -151,36 +90,52 @@ $this->assign('meta_description', $venue['seo_desc']);
         </div>
     </div>
 
-    <div class="columns small-12 medium-8 flex-container">
+    <div class="columns small-12 medium-8 large-8 flex-container">
         <div class="card venue-description">
             <div class="card-section">
-                <h4>About iFixIt Repairs</h4>
-                <p>NCIX is a computer shop on 64th Ave. north of the Langley Bypass. in Langley, BC. NCIX sells a wide
-                    range of laptops, computers, pc parts, accessories,
-                    and build custom computer systems.</p>
+                <h4>About <?php echo h($venue['name']);?></h4>
+                <p><?php echo h($venue['description']);?></p>
 
+                <?php if ( !empty($venue->services) ): ?>
                 <b>Services:</b>
                 <p>
-                    <span class="label">Screen Repair</span>
-                    <span class="label">Battery Replacment</span>
+                    <?php
+                        foreach ($venue->services as $i => $row) {
+                            echo '<span class="label">' . h($row['name']) . '</span>' . "\n";
+                        } ?>
                 </p>
+                <?php endif; ?>
 
+                <?php if ( !empty($venue->products) ): ?>
                 <b>Products</b>
                 <p>
-                    <span class="label">Phone Cases</span>
+                    <?php
+                        foreach ($venue->products as $i => $row) {
+                            echo '<span class="label">' . h($row['name']) . '</span>' . "\n";
+                        } ?>
                 </p>
+                <?php endif; ?>
 
-                <b>Brands</b>
-                <p>
-                    <span class="label">Sony</span>
-                    <span class="label">Google</span>
-                    <span class="label">Samsung</span>
-                </p>
+                <?php if ( !empty($venue->brands) ): ?>
+                    <b>Brands</b>
+                    <p>
+                        <?php
+                            foreach ($venue->brands as $i => $row) {
+                                echo '<span class="label">' . h($row['name']) . '</span>' . "\n";
+                            } ?>
+                    </p>
+                <?php endif; ?>
 
-                <b>Languages Spoken</b>
-                <p>
-                    <span class="label">Korean</span>
-                </p>
+
+                <?php if ( !empty($venue->languages) ): ?>
+                    <b>Languages Spoken</b>
+                    <p>
+                        <?php
+                            foreach ($venue->languages as $i => $row) {
+                                echo '<span class="label" title="' . h($row['name']) . '">' . h($row['native_name']) . '</span>' . "\n";
+                            } ?>
+                    </p>
+                <?php endif; ?>
 
             </div>
 
@@ -201,7 +156,7 @@ $this->assign('meta_description', $venue['seo_desc']);
     </div>
 
 
-    <div class="columns small-12 medium-8">
+    <div class="columns small-12 medium-8 large-12">
         <div class="card profile-map">
             <script>
                 var geoCord = {
@@ -221,7 +176,7 @@ $this->assign('meta_description', $venue['seo_desc']);
 
 
     <!-- hours -->
-    <div class="columns small-12 large-4 medium-4">
+    <div class="columns small-12 medium-4 large-12">
         <div class="card venue-hours">
 
             <div class="card-divider ">
@@ -284,7 +239,7 @@ $this->assign('meta_description', $venue['seo_desc']);
             </div>
             <div class="card-section text-left">
 
-                <table width="100%">
+                <table>
                     <tbody>
                     <tr>
                         <td><h5><a href="/company/tech-direct-scarborough" title="Tech Direct ">Tech Direct</a></h5>
@@ -375,21 +330,7 @@ $this->assign('meta_description', $venue['seo_desc']);
 
 
 <!-- nearby -->
-<div class="row columns ablock text-center">
-    <!-- add block -->
-    <div class="callout">
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <!-- bartenderTraining-adblock1 -->
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-5569648086666006"
-             data-ad-slot="5270749504"
-             data-ad-format="auto"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-</div>
+<?php echo $this->element('adblockResponsive'); ?>
 
 <hr>
 

@@ -37,13 +37,9 @@
                         <?php endif; ?>
                         <div class="card-section text-center">
                             <p>
-                                <?php if (!empty($venue['display_address'])):?>
-                                    <?php echo h($venue['display_address']);?>
-                                <?php else: ?>
-                                    <?php echo h($venue['address']);?>
-                                <?php endif; ?>
+                                <?php echo h($venue->prefered_address);?>
                                 <br>
-                                <?php echo h( $this->PhoneNumber->firstNumber($venue['phone']) );?>
+                                <?php echo h( $this->Venue->getFirstPhonenumber($venue) );?>
                             </p>
                         </div>
                     </a>

@@ -27,7 +27,6 @@ $this->assign('meta_description', $city['seo_desc']);
     </div>
 </section>
 
-
 <!-- latest -->
 <!-- partials/city-featured.html start -->
 <?php $cell = $this->cell('LatestVenues', [ 'city' => $city->id ] ); echo $cell; ?>
@@ -36,38 +35,42 @@ $this->assign('meta_description', $city['seo_desc']);
 
 <!-- alt neighbouhood section -->
 <?php if (!empty($city->city_regions)): ?>
-<section class="neighbourhoods-list">
-    <div class="row column">
+    <section class="neighbourhoods-list">
+        <div class="row column">
 
-        <div class="card" >
-            <div class="card-divider ">
-                <h3>Neighbourhoods in <?php echo h($city['name'] . ', ' . $city->country['name'] )?></h3>
-            </div>
-            <div class="card-section text-left">
-
-                <div class="row">
-                    <div class="large-12 columns">
-                        <ul class="menu expanded align-left">
-                        <?php foreach( $city->city_regions as $region): ?>
-                            <li><a href="/<?php echo $region['slug'];?>">
-                                    <?php if (!empty($region['display_name'])) {
-                                        echo h($region['display_name']);
-                                    } else {
-                                        echo h($region['name']);
-                                    }?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                        </ul>
-                    </div>
+            <div class="card" >
+                <div class="card-divider ">
+                    <h3>Neighbourhoods in <?php echo h($city['name'] . ', ' . $city->country['name'] )?></h3>
                 </div>
+                <div class="card-section text-left">
 
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <ul class="menu expanded align-left">
+                            <?php foreach( $city->city_regions as $region): ?>
+                                <li><a href="/<?php echo $region['slug'];?>">
+                                        <?php if (!empty($region['display_name'])) {
+                                            echo h($region['display_name']);
+                                        } else {
+                                            echo h($region['name']);
+                                        }?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div>
 
-    </div>
-</section>
+        </div>
+    </section>
+
+    <?php echo $this->element('adblockResponsive'); ?>
+
 <?php endif;?>
+
 
 
 
@@ -77,12 +80,15 @@ $this->assign('meta_description', $city['seo_desc']);
 <!-- store types, e.g. repair, parts, training schools, etc. -->
 <?php $cell = $this->cell('CityChains', ['city' => $city->id, 'cityName' => $city['name'] ]); echo $cell; ?>
 
+<?php echo $this->element('adblockResponsive'); ?>
+
 <!-- blogs / lists for this city -->
 
 <!-- partials/feature-blogs.html start -->
 <?php $cell = $this->cell('LatestBlogs', [ 'searchParams' => [ 'search' => 'tips', 'orderby' => 'relevance'] ]); echo $cell; ?>
 <!-- partials/feature-blogs.html end -->
 
+<?php echo $this->element('adblockResponsive'); ?>
 
 <!-- footer -->
 
