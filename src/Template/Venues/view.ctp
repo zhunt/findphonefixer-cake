@@ -143,7 +143,7 @@ $this->assign('meta_description', $venue['seo_desc']);
                 <hr>
                 <div class="row unstack-medium">
                     <div class="column">
-                        <i>Last updated: June 2016</i>
+                        <i>Last updated: <?php echo $this->Time->format($venue->last_update); ?></i>
                     </div>
                     <div class="column text-right shrink">
                         <b><a href="#" data-open="reportErrorModal">Report Error</a></b>
@@ -160,15 +160,15 @@ $this->assign('meta_description', $venue['seo_desc']);
         <div class="card profile-map">
             <script>
                 var geoCord = {
-                    "latt": 43.653679,
-                    "long": -79.380112,
-                    "venue_name": "iFixSite",
-                    "venue_address": "1158 Kennedy Rd."
+                    "latt": <?php echo $venue->geo_latt ?>,
+                    "long": <?php echo $venue->geo_long ?>,
+                    "venue_name": "<?php echo $venue->name ?>",
+                    "venue_address": "<?php echo $venue->prefered_address ?>"
                 };
             </script>
             <div class="card-section text-center">
                 <div id="profile-map">MAP</div>
-                <p><b>220 Yonge St, Toronto, ON M5B 2H1, 4th floor</b></p>
+                <p><b><?php echo $venue->prefered_address ?></b></p>
             </div>
         </div>
 
@@ -184,13 +184,13 @@ $this->assign('meta_description', $venue['seo_desc']);
             </div>
 
             <div class="row large-unstack medium-unstack card-section text-center">
-                <div class="column"><p><b>Mon</b><br>9:30am - 7:00pm </p></div>
-                <div class="column"><p><b>Tue</b><br>10:30am - 8:00pm </p></div>
-                <div class="column"><p class="selected"><b>Wed</b><br>10:30am - 8:00pm</p></div>
-                <div class="column"><p><b>Thu</b><br>10:30am - 8:00pm </p></div>
-                <div class="column"><p><b>Fri</b><br>9:30am - 7:00pm </p></div>
-                <div class="column"><p><b>Sat</b><br>9:30am - 7:00pm </p></div>
-                <div class="column"><p><b>Sun</b><br>Closed </p></div>
+                <div class="column"><p class="day_1"><b>Mon</b><br><?php echo h($venue->hours_mon); ?></p></div>
+                <div class="column"><p class="day_2"><b>Tue</b><br><?php echo h($venue->hours_tue); ?></p></div>
+                <div class="column"><p class="day_3"><b>Wed</b><br><?php echo h($venue->hours_wed); ?></p></div>
+                <div class="column"><p class="day_4"><b>Thu</b><br><?php echo h($venue->hours_thu); ?></p></div>
+                <div class="column"><p class="day_5"><b>Fri</b><br><?php echo h($venue->hours_fri); ?></p></div>
+                <div class="column"><p class="day_6"><b>Sat</b><br><?php echo h($venue->hours_sat); ?></p></div>
+                <div class="column"><p class="day_0"><b>Sun</b><br><?php echo h($venue->hours_sun); ?></p></div>
             </div>
 
         </div>
@@ -202,31 +202,7 @@ $this->assign('meta_description', $venue['seo_desc']);
 
 <div class="row">
 
-    <div class="columns small-12 large-4">
-        <!-- spoonsored -->
-        <div class="callout">
-            <p class="text-center"><b>Sponsors:</b></p>
-            <div class="row align-middle medium-unstack"> <!-- align-middle -->
-                <div class="columns text-center">
-                    <a href="http://www.kqzyfj.com/g7116y1A719PXSQVXZYPRRRTZZVX" target="_blank">
-                        <img src="http://www.awltovhc.com/2d100uuymsqBJECHJLKBDDDFLLHJ" alt="" border="0"/></a>
-                </div>
-
-                <div class="columns text-center">
-                    <a href="http://www.jdoqocy.com/r779ar-xrzEMHFKMONEGFMOIHNO?cm_mmc=CJ-_-4076811-_-7205798-_-99designs%20logo%20-%20125x125"
-                       target="_blank">
-                        <img src="http://www.awltovhc.com/2h103kpthnl6E97CEGF687EGA9FG" alt="99Designs.com" border="0"/></a>
-                </div>
-
-                <div class="columns text-center">
-                    <a href="http://www.tkqlhce.com/ks82biroiq5D86BDFE578D6DE86" target="_blank">
-                        <img src="http://www.tqlkg.com/rd65ax0pvtEMHFKMONEGHMFMNHF" alt="" border="0"/></a>
-                </div>
-            </div>
-        </div>
-        <!-- spoonsored end -->
-
-    </div>
+    <?php $cell = $this->cell('Sponsors'); echo $cell; ?>
 
 
     <div class="columns small-12 large-8">
