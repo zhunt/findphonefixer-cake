@@ -236,4 +236,34 @@ class VenuesTable extends Table
             ->contain( ['Cities' => ['fields' => ['id', 'name'] ], 'VenueTypes' => ['fields' => ['id', 'VenueTypesVenues.venue_id', 'name'] ] ] );
     }
 
+
+    /* based on the latt/long passed in, get a list of venues a distance from that point
+ * function returns distance in Km
+ */
+    // pass in:  ['geo_latt', 'geo_long', 'venueId' ]
+    function findNearbyVenues(Query $query, $options) {
+        $distance = 10; // 1 = 1000 metres, 10 = 10km
+        $limit = 10;
+
+        $venueLat = floatval( $options['geoLatt'] );
+        $venueLng = floatval( $options['geoLong']);
+        $venueId = intval($options['venueId']);
+
+        $distanceField =
+            '(6371 * acos( cos( radians(:latitude) ) * cos( radians( Venues.geo_latt ) ) *
+                                cos( radians( Venues.geo_long ) - radians(:longitude) ) + sin( radians(:latitude) ) *
+                                sin( radians( Venues.geo_latt ) ) ) )';
+
+        return $query
+            ->where([ 'Venues.flag_published' => 1, 'Venues.id !=' => $venueId, 'geo_latt IS NOT NULL'  ])
+            ->select(['id', 'name', 'sub_name', 'slug', 'address', 'geo_latt', 'geo_long', 'distance' => $distanceField])
+            ->limit($limit)
+            ->group('Venues.id')
+            ->having(['distance <=' => $distance])
+            ->order('distance ASC')
+            ->bind(':latitude', $venueLat, 'float')
+            ->bind(':longitude', $venueLng, 'float');
+
+    }
+
 }

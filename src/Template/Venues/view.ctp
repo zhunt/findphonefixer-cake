@@ -4,7 +4,7 @@
   * @var \App\Model\Entity\Venue $venue
   */
 
-debug($venue->toArray());
+// debug($venue->toArray());
 
 $this->assign('title', $venue['seo_title']);
 $this->assign('meta_description', $venue['seo_desc']);
@@ -207,99 +207,8 @@ $this->assign('meta_description', $venue['seo_desc']);
 
     <div class="columns small-12 large-8">
         <!-- nearby -->
-
-        <div class="card nearby-venues">
-
-            <div class="card-divider ">
-                <h4><i class="fa fa-map-o"></i> Nearby</h4>
-            </div>
-            <div class="card-section text-left">
-
-                <table>
-                    <tbody>
-                    <tr>
-                        <td><h5><a href="/company/tech-direct-scarborough" title="Tech Direct ">Tech Direct</a></h5>
-                            1158 Kennedy Rd. | <em>Computer Store</em>
-                        </td>
-                        <td>173m</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h5><a href="/company/future_shop_toronto-kennedy" title="Future Shop Scarborough">Future
-                                    Shop</a></h5>
-                            1141 Kennedy Rd
-                            | <em>Electronics </em>
-                        </td>
-                        <td>235m</td>
-                    </tr>
-                    <tr>
-                        <td><h5><a href="/company/tech-source-scarborough" title="Tech Source ">Tech Source</a></h5>
-                            193 Shropshire Dr.
-                            | <em>Computer Store</em>
-                        </td>
-                        <td>411m</td>
-                    </tr>
-                    <tr>
-                        <td><h5><a href="/company/canada-computers-scarborough" title="Canada Computers (Scarborough)">Canada
-                                    Computers</a></h5>
-                            1306 Kennedy Rd.
-                            | <em>Computer Store</em>
-                        </td>
-                        <td>609m</td>
-                    </tr>
-                    <tr>
-                        <td><h5><a href="/company/factory-direct-scarborough" title="Factory Direct (Scarborough)">Factory
-                                    Direct</a></h5>
-                            1399 Kennedy Rd.
-                            | <em>Computer Store</em>
-                        </td>
-                        <td>1.1km</td>
-                    </tr>
-                    <tr>
-                        <td><h5><a href="/company/ez_connect_solutions" title="EZ Connect Solutions ">EZ Connect
-                                    Solutions</a></h5>
-                            1158 Warden Ave.
-                            | <em>Phones and Accessories</em>
-                        </td>
-                        <td>1.7km</td>
-                    </tr>
-                    <tr>
-                        <td><h5><a href="/company/best_buy_toronto-scarborough-town"
-                                   title="Best Buy Mobile Scarborough Town Centre">Best Buy Mobile</a></h5>
-                            300 Borough Dr.
-                            | <em>Phones and Accessories</em>
-                        </td>
-                        <td>3km</td>
-                    </tr>
-                    <tr>
-                        <td><h5><a href="/company/mpt-computers" title="MPT Computers ">MPT Computers</a></h5>
-                            2370 Midland Ave., Unit A10
-                            | <em>Computer Store</em>
-                        </td>
-                        <td>3km</td>
-                    </tr>
-                    <tr>
-                        <td><h5><a href="/company/best-buy-scarborough" title="Best Buy (Scarborough)">Best Buy</a></h5>
-                            480 Progress Ave.
-                            | <em>Computer Store</em>
-                        </td>
-                        <td>3km</td>
-                    </tr>
-                    <tr>
-                        <td><h5><a href="/company/best_buy_toronto-ashtonbee" title="Best Buy Warden">Best Buy</a></h5>
-                            50 Ashtonbee Rd., Unit 2
-                            | <em>Electronics</em>
-                        </td>
-                        <td>3.1km</td>
-                    </tr>
-
-                    </tbody>
-                </table>
-
-            </div>
-
-        </div>
-
+        <?php $cell = $this->cell('NearbyVenues', ['venueId' => $venue->id, 'geoLatt' => $venue->geo_latt, 'geoLong' => $venue->geo_long]); echo $cell; ?>
+        <!-- nearby end -->
     </div>
 
 </div>

@@ -73,4 +73,15 @@ class VenueHelper extends Helper
         // TODO, just single number ?
     }
 
+
+    // round a number in metres down to km with 2 decimal places, if less than 1km, use metres
+
+    public function getDistanceInKm($distance) {
+
+        if ($distance < 1 ) {
+            return round($distance * 1000) . 'm';
+        } else {
+            return round($distance, 2) . 'km';
+        }
+    }
 }
