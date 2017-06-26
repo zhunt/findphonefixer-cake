@@ -4,20 +4,17 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * CityRegion Entity
+ * VenueType Entity
  *
  * @property int $id
  * @property string $name
- * @property string $display_name
  * @property string $slug
- * @property string $seo_title
- * @property string $seo_desc
- * @property int $city_id
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
- * @property \App\Model\Entity\City $city
  * @property \App\Model\Entity\Venue[] $venues
  */
-class CityRegion extends Entity
+class VenueType extends Entity
 {
 
     /**

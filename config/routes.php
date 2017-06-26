@@ -54,6 +54,8 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/city/:slug', ['controller' => 'LandingPage', 'action' => 'city' ], [ 'pass' => ['slug'] ]);
 
+    $routes->connect('/neighbourhood/:slug', ['controller' => 'CityRegions', 'action' => 'filterVenues' ], [ 'pass' => ['slug'] ]);
+
     $routes->connect('/venue/:slug', ['controller' => 'Venues', 'action' => 'view' ], [ 'pass' => ['slug'] ]); // temp name
 
     /**

@@ -26,9 +26,6 @@ class NearbyVenuesCell extends Cell
     {
         $this->loadModel('Venues');
 
-        //debug($venueId, $geoLatt, $geoLong );
-        //debug($geoLong );
-
         $result =$this->Venues->find('nearbyVenues', [ 'venueId' => $venueId, 'geoLatt' => $geoLatt, 'geoLong' => $geoLong ] )
             ->contain(['VenueTypes']);
 

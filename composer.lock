@@ -54,16 +54,16 @@
         },
         {
             "name": "cakephp/cakephp",
-            "version": "3.4.8",
+            "version": "3.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "143bf387be9150dac747f57b7e1af2dba731e6f4"
+                "reference": "a9eb22193e8df235ec71f4ed4a71158efa5e0b23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/143bf387be9150dac747f57b7e1af2dba731e6f4",
-                "reference": "143bf387be9150dac747f57b7e1af2dba731e6f4",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/a9eb22193e8df235ec71f4ed4a71158efa5e0b23",
+                "reference": "a9eb22193e8df235ec71f4ed4a71158efa5e0b23",
                 "shasum": ""
             },
             "require": {
@@ -136,7 +136,7 @@
                 "rapid-development",
                 "validation"
             ],
-            "time": "2017-06-20T01:04:40+00:00"
+            "time": "2017-06-26T02:03:42+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -1559,16 +1559,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.8.7",
+            "version": "v0.8.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "be969b9dc89dcaefdb9a3117fa91fa38bca19f50"
+                "reference": "fe65c30cbc55c71e61ba3a38b5a581149be31b8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/be969b9dc89dcaefdb9a3117fa91fa38bca19f50",
-                "reference": "be969b9dc89dcaefdb9a3117fa91fa38bca19f50",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/fe65c30cbc55c71e61ba3a38b5a581149be31b8e",
+                "reference": "fe65c30cbc55c71e61ba3a38b5a581149be31b8e",
                 "shasum": ""
             },
             "require": {
@@ -1628,7 +1628,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2017-06-20T12:51:31+00:00"
+            "time": "2017-06-24T06:16:19+00:00"
         },
         {
             "name": "seld/cli-prompt",

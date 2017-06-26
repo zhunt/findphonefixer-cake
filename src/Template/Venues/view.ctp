@@ -4,7 +4,7 @@
   * @var \App\Model\Entity\Venue $venue
   */
 
-// debug($venue->toArray());
+debug($venue->toArray());
 
 $this->assign('title', $venue['seo_title']);
 $this->assign('meta_description', $venue['seo_desc']);
@@ -26,8 +26,8 @@ $this->assign('meta_description', $venue['seo_desc']);
                             <li><a href="/country/<?php echo $venue->country->slug;?>"><?php echo h($venue->country->name); ?></a></li>
                             <li><a href="/city/<?php echo $venue->city->slug;?>"><?php echo h($venue->city->name); ?></a></li>
                             <?php
-                                if (!empty($venue->city_region->prefered_name )){
-                                    echo '<li><a href="/city_region/' . $venue->city_region->slug . '">' . $venue->city_region->prefered_name . '</a></li>';
+                                if (!empty($venue->city_region->display_name )){
+                                    echo '<li><a href="/neighbourhood/' . $venue->city_region->slug . '">' . $venue->city_region->display_name . '</a></li>';
                                 }
                             ?>
                             <li><?php echo h($venue['name']); ?></li>
@@ -94,7 +94,25 @@ $this->assign('meta_description', $venue['seo_desc']);
         <div class="card venue-description">
             <div class="card-section">
                 <h4>About <?php echo h($venue['name']);?></h4>
-                <p><?php echo h($venue['description']);?></p>
+                <?php echo $this->Text->autoParagraph( trim($venue['description']));?>
+
+
+                <!-- if a mall, list stores in mall here-->
+                <!--
+                <b>Stores in Mall:</b>
+                <div class="row small-up-1 large-up-3 medium-up-2 align-left">
+                    <div class="columns"><a href="#">BANANA REPUBLIC MEN</a></div>
+                    <div class="columns"><a href="#">Joe Fresh</a></div>
+                    <div class="columns"><a href="#">Tommy Hillfigur</a></div>
+                    <div class="columns"><a href="#">Banana republic</a></div>
+                    <div class="columns"><a href="#">BELL</a></div>
+                    <div class="columns"><a href="#">Tommy Hillfigure</a></div>
+                    <div class="columns"><a href="#">Banana republic</a></div>
+                    <div class="columns"><a href="#">BANANA REPUBLIC MEN</a></div>
+                    <div class="columns"><a href="#">Tommy Hillfigure</a></div>
+                </div>
+                <hr>
+                -->
 
                 <?php if ( !empty($venue->services) ): ?>
                 <b>Services:</b>
@@ -168,7 +186,7 @@ $this->assign('meta_description', $venue['seo_desc']);
             </script>
             <div class="card-section text-center">
                 <div id="profile-map">MAP</div>
-                <p><b><?php echo $venue->prefered_address ?></b></p>
+                <p><b><?php echo '<a href="https://www.google.ca/maps?q=' . urlencode($venue->prefered_address) . '" title="View on Google Maps" >' . h($venue->prefered_address) ?></a></b></p>
             </div>
         </div>
 
