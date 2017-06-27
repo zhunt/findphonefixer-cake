@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
+use Cake\View\Helper\PaginatorHelper;
+
 /**
  * CityRegions Controller
  *
@@ -18,6 +20,8 @@ class CityRegionsController extends AppController
 
     ];
 
+
+
     /**
      * Get venues in a city region
      * @param null $slug
@@ -26,12 +30,14 @@ class CityRegionsController extends AppController
 
         $this->loadModel('Venues');
 
-        $query = $this->Venues->find('all', [ 'fields' => [ 'id', 'name', 'sub_name', 'photos', 'display_address', 'slug' ] ])
+        $query = $this->Venues->find('all', [ 'fields' => [ 'id', 'name', 'sub_name', 'photos', 'address',  'display_address', 'slug' ] ])
             ->where([ 'Venues.flag_published' => true, 'CityRegions.slug' => 'old-toronto' ])
             ->contain(['CityRegions','VenueTypes'] )
             ->order('Venues.name');
 
         $this->set('venues', $this->paginate($query));
+
+
 
         $this->set(compact('venues'));
         $this->set('_serialize', ['venues']);
