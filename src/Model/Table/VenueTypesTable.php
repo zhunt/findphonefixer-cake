@@ -40,6 +40,8 @@ class VenueTypesTable extends Table
 
         $this->addBehavior('Timestamp');
 
+        $this->addBehavior('Muffin/Slug.Slug');
+
         $this->belongsToMany('Venues', [
             'foreignKey' => 'venue_type_id',
             'targetForeignKey' => 'venue_id',

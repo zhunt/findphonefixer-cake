@@ -40,6 +40,9 @@ class ProductsTable extends Table
 
         $this->addBehavior('Timestamp');
 
+        $this->addBehavior('Muffin/Slug.Slug');
+
+
         $this->belongsToMany('Venues', [
             'foreignKey' => 'product_id',
             'targetForeignKey' => 'venue_id',

@@ -52,6 +52,8 @@ class VenuesTable extends Table
 
         $this->addBehavior('Timestamp');
 
+        $this->addBehavior('Muffin/Slug.Slug');
+
         $this->belongsTo('Cities', [
             'foreignKey' => 'city_id',
             'joinType' => 'INNER'

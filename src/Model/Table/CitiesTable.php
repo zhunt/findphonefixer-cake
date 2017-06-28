@@ -40,6 +40,8 @@ class CitiesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Muffin/Slug.Slug');
+
         $this->belongsTo('Provinces', [
             'foreignKey' => 'province_id'
         ]);

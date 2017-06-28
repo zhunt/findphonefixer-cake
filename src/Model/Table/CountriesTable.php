@@ -38,6 +38,8 @@ class CountriesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Muffin/Slug.Slug');
+
         $this->hasMany('Cities', [
             'foreignKey' => 'country_id'
         ]);

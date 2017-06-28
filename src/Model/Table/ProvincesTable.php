@@ -38,6 +38,9 @@ class ProvincesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Muffin/Slug.Slug');
+
+
         $this->belongsTo('Countries', [
             'foreignKey' => 'country_id',
             'joinType' => 'INNER'

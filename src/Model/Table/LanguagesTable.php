@@ -36,6 +36,8 @@ class LanguagesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Muffin/Slug.Slug');
+
         $this->belongsToMany('Venues', [
             'foreignKey' => 'language_id',
             'targetForeignKey' => 'venue_id',

@@ -40,6 +40,8 @@ class ChainsTable extends Table
 
         $this->addBehavior('Timestamp');
 
+        $this->addBehavior('Muffin/Slug.Slug'];
+
         $this->hasMany('Venues', [
             'foreignKey' => 'chain_id'
         ]);

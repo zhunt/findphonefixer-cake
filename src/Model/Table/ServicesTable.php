@@ -40,6 +40,8 @@ class ServicesTable extends Table
 
         $this->addBehavior('Timestamp');
 
+        $this->addBehavior('Muffin/Slug.Slug');
+
         $this->belongsToMany('Venues', [
             'foreignKey' => 'service_id',
             'targetForeignKey' => 'venue_id',
