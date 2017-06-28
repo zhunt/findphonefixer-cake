@@ -4,7 +4,7 @@
   * @var \App\Model\Entity\Venue $venue
   */
 
-debug($venue->toArray());
+//debug($venue->toArray());
 
 $this->assign('title', $venue['seo_title']);
 $this->assign('meta_description', $venue['seo_desc']);
@@ -23,7 +23,8 @@ $this->assign('meta_description', $venue['seo_desc']);
                     <nav aria-label="You are here:" role="navigation" class="">
                         <ul class="breadcrumbs">
                             <li><a href="/">Home</a></li>
-                            <li><a href="/country/<?php echo $venue->country->slug;?>"><?php echo h($venue->country->name); ?></a></li>
+                            <!-- <li><a href="/country/<?php echo $venue->country->slug;?>"><?php echo h($venue->country->name); ?></a></li> -->
+                            <li><?php echo h($venue->country->name); ?></li>
                             <li><a href="/city/<?php echo $venue->city->slug;?>"><?php echo h($venue->city->name); ?></a></li>
                             <?php
                                 if (!empty($venue->city_region->display_name )){
@@ -52,9 +53,9 @@ $this->assign('meta_description', $venue['seo_desc']);
             <p><b>
                     <?php
                         if ( !empty($venue->city_region->prefered_name) ) {
-                            echo h($venue->city_region->prefered_name);
+                            echo "<a href=\"/city_venues/{$venue->city->slug}\" title='Show all stores in city'>" . h($venue->city_region->prefered_name) . '</a>';
                         } else {
-                            echo h($venue->city->name);
+                            echo "<a href=\"/city_venues/{$venue->city->slug}\" title='Show all stores in city'>" . h($venue->city->name) . '</a>';
                         }
                     ?>
                     |

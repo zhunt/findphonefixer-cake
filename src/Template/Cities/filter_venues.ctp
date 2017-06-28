@@ -7,18 +7,19 @@
 
 //debug($venues->toArray());
 
-$cityRegion = $venues->first(); //debug($cityRegion);
+$city = $venues->first(); // debug($city); page = $this->request->getQuery('page');
 
-$cityRegion = $cityRegion->city_region;
+$city = $city->city;
 
-$this->assign('title', !empty($cityRegion->display_name) ? $cityRegion->display_name : $cityRegion->name);
-$this->assign('meta_description',  !empty($cityRegion->seo_desc) ? $cityRegion->seo_desc : $this->fetch('title') );
+$this->assign('title', !empty($city->display_name) ? $city->display_name : $city->name);
+$this->assign('meta_description',  !empty($city->seo_desc) ? $city->seo_desc : $this->fetch('title') );
 
 $searchTitle = $this->fetch('title');
 
 if ( !empty($this->request->getQuery('page') ) ) {
     $this->assign('title', $this->fetch('title') . ' | ' . $this->request->getQuery('page') );
 }
+
 
 ?>
 

@@ -30,6 +30,9 @@ $this->assign('meta_description', $city['seo_desc']);
 <!-- latest -->
 <!-- partials/city-featured.html start -->
 <?php $cell = $this->cell('LatestVenues', [ 'city' => $city->id ] ); echo $cell; ?>
+
+
+
 <!-- partials/city-featured.html end -->
 
 

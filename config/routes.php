@@ -54,7 +54,13 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/city/:slug', ['controller' => 'LandingPage', 'action' => 'city' ], [ 'pass' => ['slug'] ]);
 
+    $routes->connect('/city_venues/:slug', ['controller' => 'Cities', 'action' => 'filterVenues' ], [ 'pass' => ['slug'] ]);
+
     $routes->connect('/neighbourhood/:slug', ['controller' => 'CityRegions', 'action' => 'filterVenues' ], [ 'pass' => ['slug'] ]);
+
+    $routes->connect('/search/:filterType/:slug/:city', ['controller' => 'LandingPage', 'action' => 'filterService' ],
+        [ 'pass' => ['filterType', 'slug', 'city'], 'filterType' => '[a-z0-9]+(?:-[a-z0-9]+)*', 'city' => '[a-z0-9]+(?:-[a-z0-9]+)*' ]);
+
 
     $routes->connect('/venue/:slug', ['controller' => 'Venues', 'action' => 'view' ], [ 'pass' => ['slug'] ]); // temp name
 

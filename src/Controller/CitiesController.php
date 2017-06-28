@@ -13,6 +13,30 @@ use App\Controller\AppController;
 class CitiesController extends AppController
 {
 
+    public $paginate = [
+        'Venues' => [ 'limit' => 20]
+    ];
+
+
+    public function filterVenues($slug = null) {
+
+        $this->loadModel('Venues');
+
+        $query = $this->Venues->find('all', ['fields' => [ 'id', 'name', 'sub_name', 'photos', 'address',  'display_address', 'slug'] ] )
+            ->where([ 'Venues.flag_published' => true, 'Cities.slug' => $slug ])
+            ->contain([
+                'VenueTypes',
+                'Cities' => ['fields' => [ 'id', 'name', 'seo_title', 'seo_desc'] ] ])
+            ->order('Venues.name');
+
+        $this->set('venues', $this->paginate($query));
+
+        $this->set(compact('venues'));
+        $this->set('_serialize', ['venues']);
+
+
+    }
+
     /**
      * Index method
      *

@@ -16,8 +16,7 @@ class CityRegionsController extends AppController
 {
 
     public $paginate = [
-        'Venues' => [ 'limit' => 3]
-
+        'Venues' => [ 'limit' => 20]
     ];
 
 
@@ -30,9 +29,11 @@ class CityRegionsController extends AppController
 
         $this->loadModel('Venues');
 
-        $query = $this->Venues->find('all', [ 'fields' => [ 'id', 'name', 'sub_name', 'photos', 'address',  'display_address', 'slug' ] ])
-            ->where([ 'Venues.flag_published' => true, 'CityRegions.slug' => 'old-toronto' ])
-            ->contain(['CityRegions','VenueTypes'] )
+        $query = $this->Venues->find('all', ['fields' => [ 'id', 'name', 'sub_name', 'photos', 'address',  'display_address', 'slug'] ] )
+            ->where([ 'Venues.flag_published' => true, 'CityRegions.slug' => $slug ])
+            ->contain([
+                'VenueTypes',
+                'CityRegions' => ['fields' => [ 'id', 'name', 'display_name', 'seo_title', 'seo_desc'] ] ])
             ->order('Venues.name');
 
         $this->set('venues', $this->paginate($query));

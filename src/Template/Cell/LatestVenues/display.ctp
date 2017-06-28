@@ -6,7 +6,8 @@
     if ($showCityName) {
         $temp = $venues->all()->first();
         if ( !empty($temp) ) {
-            $cityName = $temp->city['name'];
+            $cityName = $temp->city->name;
+            $citySlug = $temp->city->slug;
         }
     }
     ?>
@@ -48,6 +49,16 @@
 
         <?php endforeach; ?>
 
+
     </div>
+
+<?php if ( !empty( $cityName)): ?>
+    <div class="column row">
+        <div class="text-right">
+            <a href="/city_venues/<?php echo $citySlug;?>">All</a>
+        </div>
+    </div>
+    <hr>
+<?php endif;?>
 
 </section>

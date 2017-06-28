@@ -233,7 +233,7 @@ class VenuesTable extends Table
 
     public function findHomepageVenues(Query $query) {
         return $query->where( [ 'Venues.flag_published' => true ])
-            ->contain( ['Cities' => ['fields' => ['id', 'name'] ], 'VenueTypes' => ['fields' => ['id', 'VenueTypesVenues.venue_id', 'name'] ] ] );
+            ->contain( ['Cities' => ['fields' => ['id', 'name', 'slug'] ], 'VenueTypes' => ['fields' => ['id', 'VenueTypesVenues.venue_id', 'name'] ] ] );
     }
 
 

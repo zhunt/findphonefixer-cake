@@ -40,6 +40,61 @@ class LandingPageController extends AppController
         $this->set('_serialize', ['city']);
     }
 
+
+    public function filterService( $filterType = null, $slug = null, $city = null) {
+        // debug( $filterType) ; debug( $slug );
+
+        // e.g. http://localhost:8085/search/service/electrical-repairs/toronto
+        // http://localhost:8085/search/product/mobile-phones/toronto
+        // http://localhost:8085/search/language/korean/toronto
+
+        $this->loadModel('Venues');
+
+        $filterArray['Venues.flag_published'] = true;
+
+        $query = $this->Venues->find('all', ['fields' => [ 'id', 'name', 'sub_name', 'photos', 'address',  'display_address', 'slug'] ] )
+            ->where([ 'Venues.flag_published' => true])
+            ->contain([
+                'VenueTypes',
+                'Cities' => ['fields' => [ 'id', 'name', 'seo_title', 'seo_desc'] ]
+
+            ])
+            ->order('Venues.name');
+
+        $searchTextPrefix = '';
+
+        if ( !empty($city)) {
+            $query->where(['Cities.slug' => $city]);
+        }
+        if ( $filterType == 'service') {
+            $query->matching('Services', function ($q) use ($slug) {
+                return $q->where( ['Services.slug' => $slug] );
+            });
+            $searchTextPrefix = 'With ' . $this->Venues->Services->findBySlug($slug)->first()->name;
+        }
+
+        if ( $filterType == 'product') {
+            $query->matching('Products', function ($q) use ($slug) {
+                return $q->where( ['Products.slug' => $slug] );
+            });
+            $searchTextPrefix = 'Selling ' . $this->Venues->Products->findBySlug($slug)->first()->name;
+        }
+
+        if ( $filterType == 'language') {
+            $query->matching('Languages', function ($q) use ($slug) {
+                return $q->where( ['Languages.slug' => $slug] );
+            });
+
+            $searchTextPrefix = 'Speaking ' . $this->Venues->Languages->findBySlug($slug)->first()->name;
+        }
+
+        $this->set('venues', $this->paginate($query));
+
+        $this->set(compact('venues', 'searchTextPrefix' ));
+        $this->set('_serialize', ['venues']);
+
+    }
+
     /**
      * Index method
      *
