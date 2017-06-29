@@ -1,23 +1,4 @@
-<?php
-
-// use Cake\Utility\Hash;
-
-
-// debug(  );
-
- //echo $this->User->welcome();
-
- echo $this->User->logout();
-
-// echo $this->User->socialLogin('facebook');
-
-
-
-
-
-?>
-
-<?php //if ($showAdminPanel == true): debug($userId); ?>
+<?php if ( !empty($userLoggedIn)): ?>
 <div class="row admin-panel-bar" style="background-color: #607d8b">
     <div class="column">
         <h4>Admin</h4>
@@ -57,7 +38,7 @@
 
 </div>
 
-<?php // endif; ?>
+<?php endif; ?>
 
 <section class="header">
     <div class="row">

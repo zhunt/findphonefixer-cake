@@ -68,16 +68,9 @@ class AppController extends Controller
             $this->set('_serialize', true);
         }
 
+        $this->set('userLoggedIn', $this->Auth->user('id') );
 
-/*
-        if ( $this->Auth->user('id') ) {
-            $this->set('showAdminPanel', true);
-            $this->set('userId', $this->Auth->user('id') );
-        } else {
-            $this->set('showAdminPanel', false);
-            $this->set('userId', $this->Auth->user('id') );
-        }
-*/
+//debug($this->Auth->user('id'));
 
     }
 }
