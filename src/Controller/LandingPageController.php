@@ -15,7 +15,7 @@ class LandingPageController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow( ['home', 'city', 'filter_service']); // make these pages public
+        $this->Auth->allow( ['home', 'city', 'filterService']); // make these pages public
     }
 
     public function home()
@@ -53,6 +53,7 @@ class LandingPageController extends AppController
         // e.g. http://localhost:8085/search/service/electrical-repairs/toronto
         // http://localhost:8085/search/product/mobile-phones/toronto
         // http://localhost:8085/search/language/korean/toronto
+        // http://localhost:8085/search/brand/korean/toronto
 
         $this->loadModel('Venues');
 
@@ -92,6 +93,14 @@ class LandingPageController extends AppController
             });
 
             $searchTextPrefix = 'Speaking ' . $this->Venues->Languages->findBySlug($slug)->first()->name;
+        }
+
+        if ( $filterType == 'brand') {
+            $query->matching('Brands', function ($q) use ($slug) {
+                return $q->where( ['Brands.slug' => $slug] );
+            });
+
+            $searchTextPrefix = 'Carrying ' . $this->Venues->Languages->findBySlug($slug)->first()->name;
         }
 
         $this->set('venues', $this->paginate($query));

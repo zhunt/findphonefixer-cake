@@ -10,7 +10,7 @@
                     <div class="large-12 columns">
                         <ul class="menu expanded align-left">
                             <?php foreach( $chains as $slug => $item):?>
-                                <li><a href="/<?php echo $slug ?>"><?php echo $item ?></a></li>
+                                <li><a href="/search/brand/<?php echo $slug; ?>/<?php echo $citySlug ?>"><?php echo h($item); ?></a></li>
                             <?php endforeach;?>
                         </ul>
                     </div>

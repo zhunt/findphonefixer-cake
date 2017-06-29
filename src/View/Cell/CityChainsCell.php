@@ -23,7 +23,7 @@ class CityChainsCell extends Cell
      * @return void
      */
 
-    public function display( $cityId = null, $cityName = null)
+    public function display( $cityId = null, $cityName = null, $citySlug = null)
     {
         // TODO: make list based on venue's chains
         $this->loadModel('Chains');
@@ -34,6 +34,7 @@ class CityChainsCell extends Cell
 
         $this->set('chains', $chains);
         $this->set('cityName', $cityName);
+        $this->set('citySlug', $citySlug);
 
 
     }

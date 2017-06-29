@@ -22,23 +22,26 @@ class CityServicesCell extends Cell
      *
      * @return void
      */
-    public function display( $cityId = null, $cityName = null)
+    public function display( $cityId = null, $cityName = null, $citySlug = null)
     {
         // TODO: make list based on venue's services/products
 
         $this->loadModel('Services');
         $this->loadModel('Products');
 
-        $cityServices = $this->Services->find('list', ['keyField' => 'slug','valueField' => 'name'] );
-        $cityProducts = $this->Products->find('list', ['keyField' => 'slug','valueField' => 'name'] );
-        $cityProducts->unionAll($cityServices);
+        $cityServices = $this->Services->find('list', ['keyField' => 'slug','valueField' => 'name'] )->order('name');
+        $cityProducts = $this->Products->find('list', ['keyField' => 'slug','valueField' => 'name'] )->order('name');
+        //$cityProducts->unionAll($cityServices);
 
-        $prductsServicesList =  $cityProducts->toArray();
+        //$productsServicesList =  $cityProducts->toArray();
 
-        asort($prductsServicesList);
+        //asort($productsServicesList);
 
-        $this->set('prductsServicesList', $prductsServicesList);
+        //$this->set('productsServicesList', $productsServicesList);
+        $this->set('cityServices', $cityServices);
+        $this->set('cityProducts', $cityProducts);
         $this->set('cityName', $cityName);
+        $this->set('citySlug', $citySlug);
 
 
     }

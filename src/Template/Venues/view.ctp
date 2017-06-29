@@ -80,12 +80,14 @@ $this->assign('meta_description', $venue['seo_desc']);
                 <p><b><?php echo h($this->Venue->getFirstPhonenumber($venue));?></b></p>
                 <p><b><?php echo h($this->Venue->getFirstWebsite($venue));?></b></p>
 
+                <!--
                 <button type="button" style="cursor: pointer" data-toggle="example-dropdown"><p>More...</p></button>
                 <div class="dropdown-pane" id="example-dropdown" data-dropdown data-auto-focus="true">
                     <p><b>Facebook</b></p>
                     <p><b>Twitter</b></p>
                     <p><b>Toll-Free</b></p>
                 </div>
+                -->
 
             </div>
         </div>
@@ -120,7 +122,7 @@ $this->assign('meta_description', $venue['seo_desc']);
                 <p>
                     <?php
                         foreach ($venue->services as $i => $row) {
-                            echo '<span class="label">' . h($row['name']) . '</span>' . "\n";
+                            echo '<a href="/search/service/' . $row['slug'] . '/' . $venue->city->slug . '"><span class="label">' . h($row['name']) . '</span></a>' . "\n";
                         } ?>
                 </p>
                 <?php endif; ?>
@@ -130,7 +132,7 @@ $this->assign('meta_description', $venue['seo_desc']);
                 <p>
                     <?php
                         foreach ($venue->products as $i => $row) {
-                            echo '<span class="label">' . h($row['name']) . '</span>' . "\n";
+                            echo '<a href="/search/product/' . $row['slug'] . '/' . $venue->city->slug . '"><span class="label">' . h($row['name']) . '</span></a>' . "\n";
                         } ?>
                 </p>
                 <?php endif; ?>
@@ -140,7 +142,7 @@ $this->assign('meta_description', $venue['seo_desc']);
                     <p>
                         <?php
                             foreach ($venue->brands as $i => $row) {
-                                echo '<span class="label">' . h($row['name']) . '</span>' . "\n";
+                                echo '<a href="/search/brand/' . $row['slug'] . '/' . $venue->city->slug . '"><span class="label">' . h($row['name']) . '</span></a>' . "\n";
                             } ?>
                     </p>
                 <?php endif; ?>
@@ -151,7 +153,7 @@ $this->assign('meta_description', $venue['seo_desc']);
                     <p>
                         <?php
                             foreach ($venue->languages as $i => $row) {
-                                echo '<span class="label" title="' . h($row['name']) . '">' . h($row['native_name']) . '</span>' . "\n";
+                                echo '<a href="/search/language/' . $row['slug'] . '/' . $venue->city->slug . '"><span class="label">' . h($row['native_name']) . '</span></a>' . "\n";
                             } ?>
                     </p>
                 <?php endif; ?>

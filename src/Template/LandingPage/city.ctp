@@ -51,7 +51,7 @@ $this->assign('meta_description', $city['seo_desc']);
                         <div class="large-12 columns">
                             <ul class="menu expanded align-left">
                             <?php foreach( $city->city_regions as $region): ?>
-                                <li><a href="/<?php echo $region['slug'];?>">
+                                <li><a href="/neighbourhood/<?php echo $region['slug'];?>">
                                         <?php if (!empty($region['display_name'])) {
                                             echo h($region['display_name']);
                                         } else {
@@ -79,9 +79,9 @@ $this->assign('meta_description', $city['seo_desc']);
 
 
 <!-- store types, e.g. repair, parts, training schools, etc. -->
-<?php $cell = $this->cell('CityServices', ['city' => $city->id, 'cityName' => $city['name'] ]); echo $cell; ?>
+<?php $cell = $this->cell('CityServices', ['city' => $city->id, 'cityName' => $city['name'], 'citySlug' => $city['slug'] ]); echo $cell; ?>
 <!-- store types, e.g. repair, parts, training schools, etc. -->
-<?php $cell = $this->cell('CityChains', ['city' => $city->id, 'cityName' => $city['name'] ]); echo $cell; ?>
+<?php $cell = $this->cell('CityChains', ['city' => $city->id, 'cityName' => $city['name'], 'citySlug' => $city['slug'] ]); echo $cell; ?>
 
 <?php echo $this->element('adblockResponsive'); ?>
 
