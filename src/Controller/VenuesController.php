@@ -12,6 +12,11 @@ use App\Controller\AppController;
  */
 class VenuesController extends AppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow( ['view']); // make these pages public
+    }
 
     /**
      * Index method

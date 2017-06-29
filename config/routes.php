@@ -88,20 +88,21 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->fallbacks(DashedRoute::class);
 });
 
+/*
 Router::scope('/admin', function (RouteBuilder $routes) {
     $routes->scope('/cities', ['controller' => 'Cities'], function (RouteBuilder $routes) {
         $routes->connect('/', ['action' => 'index']);
         $routes->fallbacks();
     });
-    /*
+
     $routes->scope('/venues', ['controller' => 'Venues'], function (RouteBuilder $routes) {
         $routes->connect('/', ['action' => 'index']);
         $routes->fallbacks();
     });
-    */
+
     //$routes->connect('/profile', ['controller' => 'Users', 'action' => 'edit']);
 });
-
+*/
 
 /**
  * Load all plugin routes. See the Plugin documentation on

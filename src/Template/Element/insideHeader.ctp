@@ -1,3 +1,64 @@
+<?php
+
+// use Cake\Utility\Hash;
+
+
+// debug(  );
+
+ //echo $this->User->welcome();
+
+ echo $this->User->logout();
+
+// echo $this->User->socialLogin('facebook');
+
+
+
+
+
+?>
+
+<?php //if ($showAdminPanel == true): debug($userId); ?>
+<div class="row admin-panel-bar" style="background-color: #607d8b">
+    <div class="column">
+        <h4>Admin</h4>
+
+    </div>
+    <div class="column">
+        <?php echo $this->AuthLink->link('List Venues', '/venues/index'); ?>
+    </div>
+
+    <div class="column">
+        <?php echo  $this->AuthLink->link( 'List Cities', '/cities/index'); ?>
+    </div>
+
+    <div class="column">
+        <?php echo $this->AuthLink->link('List City-Regions', '/CityRegions/index'); ?>
+    </div>
+
+    <div class="column">
+        <?php echo $this->AuthLink->link('List Brands', '/brands/index'); ?>
+    </div>
+
+    <div class="column">
+        <?php echo $this->AuthLink->link('List Chains', '/chains/index'); ?>
+    </div>
+
+    <div class="column">
+        <?php echo $this->AuthLink->link('List Products', '/products/index'); ?>
+    </div>
+
+    <div class="column">
+        <?php echo $this->AuthLink->link('List Services', '/services/index'); ?>
+    </div>
+
+    <div class="column ">
+        <?php echo $this->User->logout; ?>
+    </div>
+
+</div>
+
+<?php // endif; ?>
+
 <section class="header">
     <div class="row">
         <div class="columns large-12 align-self-bottom align-self-middle">

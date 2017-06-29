@@ -43,6 +43,7 @@ class AppController extends Controller
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+        $this->loadComponent('CakeDC/Users.UsersAuth');
 
         /*
          * Enable the following components for recommended CakePHP security settings.
@@ -50,6 +51,7 @@ class AppController extends Controller
          */
         //$this->loadComponent('Security');
         //$this->loadComponent('Csrf');
+
     }
 
     /**
@@ -65,5 +67,17 @@ class AppController extends Controller
         ) {
             $this->set('_serialize', true);
         }
+
+
+/*
+        if ( $this->Auth->user('id') ) {
+            $this->set('showAdminPanel', true);
+            $this->set('userId', $this->Auth->user('id') );
+        } else {
+            $this->set('showAdminPanel', false);
+            $this->set('userId', $this->Auth->user('id') );
+        }
+*/
+
     }
 }

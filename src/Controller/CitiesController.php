@@ -13,6 +13,13 @@ use App\Controller\AppController;
 class CitiesController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow( ['filterVenues']); // make these pages public
+    }
+
+
     public $paginate = [
         'Venues' => [ 'limit' => 20]
     ];

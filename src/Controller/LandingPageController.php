@@ -12,6 +12,12 @@ use App\Controller\AppController;
 class LandingPageController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow( ['home', 'city', 'filter_service']); // make these pages public
+    }
+
     public function home()
     {
         //$landingPage = $this->paginate($this->LandingPage);

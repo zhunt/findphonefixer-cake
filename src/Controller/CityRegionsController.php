@@ -15,9 +15,16 @@ use Cake\View\Helper\PaginatorHelper;
 class CityRegionsController extends AppController
 {
 
+
     public $paginate = [
         'Venues' => [ 'limit' => 20]
     ];
+
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow( ['filterVenues']); // make these pages public
+    }
 
 
 
@@ -38,12 +45,8 @@ class CityRegionsController extends AppController
 
         $this->set('venues', $this->paginate($query));
 
-
-
         $this->set(compact('venues'));
         $this->set('_serialize', ['venues']);
-
-
     }
 
     /**

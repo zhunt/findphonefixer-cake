@@ -13,6 +13,7 @@ $this->assign('meta_description', 'Where to find cell phone repair, iPhone, Sams
     </div>
 </section>
 
+
 <section class="hero">
     <div class="columns row text-center">
         <img src="/assets/img/findphonefixer-logo.png" class="logo slow almost-hidden" id="homepage-logo" title="FindPhoneFixer.com" alt="Find Phone Fixer logo" >
