@@ -13,7 +13,8 @@
         "muffin/slug": "^1.1",
         "cakedc/users": "^5.0",
         "league/oauth2-google": "@stable",
-        "league/oauth2-facebook": "@stable"
+        "league/oauth2-facebook": "@stable",
+        "league/csv": "^8.2"
     },
     "require-dev": {
         "psy/psysh": "@stable",

@@ -16,7 +16,10 @@ class VenuesController extends AppController
     {
         parent::initialize();
         $this->Auth->allow( ['view']); // make these pages public
+
+        $this->viewBuilder()->setLayout('default-admin');
     }
+
 
     /**
      * Index method
@@ -43,6 +46,8 @@ class VenuesController extends AppController
      */
     public function view($slug = null)
     {
+
+        $this->viewBuilder()->setLayout('default');
 
         $venue = $this->Venues->findBySlug($slug)
             ->contain(['Cities', 'Countries', 'Provinces', 'CityRegions', 'Malls', 'Chains', 'Amenities', 'Brands', 'Cuisines', 'Languages', 'Products', 'Services', 'VenueTypes'])

@@ -52,5 +52,12 @@ return [
             'action' => ['index', 'edit', 'add', 'delete'],
 
         ],
+        [
+            'role' => 'user',
+            'controller' => 'batch-venues',
+            'action' => ['index', 'edit', 'add', 'delete', 'load-csv-file', 'loadCsvFile'],
+
+        ]
+
     ]
 ];

@@ -26,32 +26,74 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('cake.css') ?>
+    <?php // echo $this->Html->css('base.css') ?>
+    <?php echo $this->Html->css('cake.css') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/app.css">
+
+    <style>
+        .admin a:hover { text-decoration: underline;}
+        .admin select { height: auto;}
+
+        .admin fieldset legend {
+            border-bottom: 2px solid #2196f3;
+            width: 100%;
+            line-height: 2rem;
+        }
+        .admin legend { color: #2196f3 }
+
+        .admin input[type="text"], textarea {
+
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            border-radius: 0;
+            background-color: #fff;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #ccc;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+            color: rgba(0, 0, 0, 0.75);
+            display: block;
+            font-family: inherit;
+            font-size: 0.875rem;
+            height: 2.3125rem;
+            margin: 0 0 1rem 0;
+            padding: 0.5rem;
+            width: 100%;
+        }
+
+        .date select, .time select, .datetime select {
+            display: inline;
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .form button[type="submit"] {
+            float: right;
+            text-transform: uppercase;
+            box-shadow: none;
+        }
+
+
+    </style>
+
 </head>
-<body>
-    <nav class="top-bar expanded" data-topbar role="navigation">
-        <ul class="title-area large-3 medium-4 columns">
-            <li class="name">
-                <h1><a href=""><?= $this->fetch('title') ?></a></h1>
-            </li>
-        </ul>
-        <div class="top-bar-section">
-            <ul class="right">
-                <li><a target="_blank" href="http://book.cakephp.org/3.0/">Documentation</a></li>
-                <li><a target="_blank" href="http://api.cakephp.org/3.0/">API</a></li>
-            </ul>
-        </div>
+<body class="admin">
+    <nav class="row column" data-topbar role="navigation">
+        <h1><a href=""><?= $this->fetch('title') ?></a></h1>
     </nav>
+
     <?= $this->Flash->render() ?>
-    <div class="container clearfix">
-        <?= $this->fetch('content') ?>
-    </div>
-    <footer>
-    </footer>
+
+    <?= $this->fetch('content') ?>
+
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDoAxSn-EXf2vJSj3LRH9FIFNyz7JuGf8U"></script>
+    <script src="/assets/js/app.js"></script>
+
 </body>
 </html>

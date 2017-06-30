@@ -16,7 +16,7 @@ class CitiesController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow( ['filterVenues']); // make these pages public
+        $this->Auth->allow( ['home', 'city', 'filter_service']); // make these pages public
     }
 
 
