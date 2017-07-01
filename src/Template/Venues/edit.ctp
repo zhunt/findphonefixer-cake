@@ -122,7 +122,7 @@
                         <?php echo $this->Form->control('hours_wed'); ?>
                     </div>
                     <div class="column">
-                        <?php echo $this->Form->control('hours_thr'); ?>
+                        <?php echo $this->Form->control('hours_thu'); ?>
                     </div>
                 </div>
                 <div class="row">
