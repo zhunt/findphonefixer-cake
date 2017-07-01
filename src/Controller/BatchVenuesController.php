@@ -103,6 +103,8 @@ class BatchVenuesController extends AppController
 
             $venue = $this->populateVenueTable($venue, $currentRow);
 
+
+
            // debug($venue);
 
 
@@ -214,6 +216,11 @@ class BatchVenuesController extends AppController
     // reads data from array (from csv file)
     public function populateVenueTable($venue, $currentRow) {
 
+        $productsServices = $this->getProductsServcies($currentRow['Category']); // array of both split
+
+        //debug($productsServices);
+
+
         $data = [
             'name' => $currentRow['Name'],
             'slug' => Inflector::slug( strtolower($currentRow['Name'])),
@@ -231,12 +238,18 @@ class BatchVenuesController extends AppController
 
             'description' => trim( $currentRow['LongDesc'] ),
 
+            'services' => $productsServices['services'],
+            'products' => $productsServices['products'],
+
+
             'venue_types' => [ '_ids' => [ 1 ] ],  // default to store
 
             'city_id' => $this->request->getQuery('cityId')
 
 
         ];
+
+        //debug($data);
 
         /*
          * 'amenities' => [
@@ -291,7 +304,7 @@ class BatchVenuesController extends AppController
         $this->autoRender = false;
 
         //  TEMP turn of encoding
-        $address = $this->request->getQuery('encodeAddress'); debug($address);
+        $address = $this->request->getQuery('encodeAddress'); //debug($address);
 
         //exit;
 
@@ -437,6 +450,45 @@ class BatchVenuesController extends AppController
 
 
 
+    }
+
+    // parses string of services offered, returns array of
+    public function getProductsServcies($row) {
+
+        debug($row);
+        // Computers, Mobile Phones, IT Services & Computer & Laptop Repair
+        // Mobile Phones, Electrical Repairs, Mobile Phone Repair
+
+        //$row = trim('Mobile Phones, Electrical Repairs, Mobile Phone Repair, Computers, IT Services & Computer & Laptop Repair');
+
+        $phrases = explode(',' , $row );
+
+        $this->loadModel('Products');
+        $productsIds =[];
+        foreach( $phrases as $term ) {
+            $result = $this->Products->findByName( trim($term) )->first();
+            if ($result) {
+                $productsIds[] = (string)$result->id;
+            }
+        }
+
+        $this->loadModel('Services');
+        $servicesIds =[];
+        foreach( $phrases as $term ) {
+            $result = $this->Services->findByName( trim($term) )->first();
+            if ($result) {
+                $servicesIds[] = (string)$result->id;
+            }
+        }
+
+        // ... add more for cuisines, etc.
+
+        $services['_ids'] = $servicesIds;
+        $products['_ids'] = $productsIds;
+
+        $productsServices = ['services' => $services, 'products' => $products ];
+
+        return($productsServices);
     }
 
 

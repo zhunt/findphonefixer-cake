@@ -47,12 +47,12 @@
                     <?= $this->Form->create($venue, ['type' => 'file', 'url' => ['action' => 'loadCsvFile'] ] ) ?>
                     <div class="row align-middle">
                         <div class="columns large-6 small-12">
-                            <label>Input Label
+                            <label>Filename (CSV)
                                 <?php echo $this->Form->control('csv_file', ['type' => 'file', 'label' => false, 'div' => false]); ?>
                             </label>
                         </div>
                         <div class="columns large-2 small-12">
-                            <label>Input Label
+                            <label>Offset Row
                                 <?php echo $this->Form->control('file_offset', ['type' => 'text', 'placeholder' => 0, 'label' => false, 'div' => false]); ?>
                             </label>
                         </div>
@@ -70,14 +70,17 @@
                 <legend>Geocode address</legend>
                 <?= $this->Form->create($venue, ['type' => 'get', 'url' => ['action' => 'geocodeAddress'], 'valueSources' => ['query', 'context'] ] ) ?>
 
-                <?php echo $this->Form->control('filename'); ?>
-                <?php echo $this->Form->control('file_offset'); ?>
+                <?php echo $this->Form->control('filename', ['type' => 'hidden']); ?>
+
 
 
 
                 <div class="row">
                     <div class="column">
                         <?php echo $this->Form->control('encodeAddress', ['type' => 'text']); ?>
+                    </div>
+                    <div class="column shrink">
+                        <?php echo $this->Form->control('file_offset', ['type' => 'text']); ?>
                     </div>
                 </div>
                 <?= $this->Form->button(__('Submit', [  'label' => false, 'div' => false ]) ) ?>
@@ -294,3 +297,11 @@
         <?= $this->Form->end() ?>
     </div>
 </div>
+
+    <script>
+        var encodeaddress = document.getElementById('encodeaddress');
+
+        if ( encodeaddress.value == '') {
+            encodeaddress.value = document.getElementById('address').value
+        }
+    </script>
