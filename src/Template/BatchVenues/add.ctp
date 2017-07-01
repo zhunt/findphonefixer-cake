@@ -41,14 +41,10 @@
     <div class="column">
 
         <div class="row column">
-
             <div class="callout">
-
                 <fieldset>
                     <legend>CSV File To Use:</legend>
-
                     <?= $this->Form->create($venue, ['type' => 'file', 'url' => ['action' => 'loadCsvFile'] ] ) ?>
-
                     <div class="row align-middle">
                         <div class="columns large-6 small-12">
                             <label>Input Label
@@ -63,20 +59,37 @@
                         <div class="columns large-4 small-12 text-right">
                             <?= $this->Form->button(__('Submit', [  'label' => false, 'div' => false ]) ) ?>
                         </div>
-
                     </div>
-
                     <?= $this->Form->end() ?>
-
                 </fieldset>
-
             </div>
+        </div>
+
+        <div class="callout">
+            <fieldset>
+                <legend>Geocode address</legend>
+                <?= $this->Form->create($venue, ['type' => 'get', 'url' => ['action' => 'geocodeAddress'], 'valueSources' => ['query', 'context'] ] ) ?>
+
+                <?php echo $this->Form->control('filename'); ?>
+                <?php echo $this->Form->control('file_offset'); ?>
+
+
+
+                <div class="row">
+                    <div class="column">
+                        <?php echo $this->Form->control('encodeAddress', ['type' => 'text']); ?>
+                    </div>
+                </div>
+                <?= $this->Form->button(__('Submit', [  'label' => false, 'div' => false ]) ) ?>
+                <?= $this->Form->end() ?>
+            </fieldset>
+
 
         </div>
 
 <?php //debug($filename);?>
 
-<?php debug($venue)?>
+<?php //debug($venue)?>
     <?= $this->Form->create($venue) ?>
     <fieldset>
         <legend><?= __('Add Venue') ?></legend>

@@ -4,7 +4,7 @@
   * @var \App\Model\Entity\Venue $venue
   */
 
-//debug($venue->toArray());
+debug($venue->toArray());
 
 $this->assign('title', $venue['seo_title']);
 $this->assign('meta_description', $venue['seo_desc']);
@@ -27,8 +27,13 @@ $this->assign('meta_description', $venue['seo_desc']);
                             <li><?php echo h($venue->country->name); ?></li>
                             <li><a href="/city/<?php echo $venue->city->slug;?>"><?php echo h($venue->city->name); ?></a></li>
                             <?php
-                                if (!empty($venue->city_region->display_name )){
-                                    echo '<li><a href="/neighbourhood/' . $venue->city_region->slug . '">' . $venue->city_region->display_name . '</a></li>';
+                                if (!empty($venue->city_region->name )){
+                                    if ( !empty($venue->city_region->display_name ) ) {
+                                        echo '<li><a href="/neighbourhood/' . $venue->city_region->slug . '">' . $venue->city_region->display_name . '</a></li>';
+                                    } else {
+                                        echo '<li><a href="/neighbourhood/' . $venue->city_region->slug . '">' . $venue->city_region->name . '</a></li>';
+                                    }
+
                                 }
                             ?>
                             <li><?php echo h($venue['name']); ?></li>

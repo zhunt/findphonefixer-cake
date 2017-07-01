@@ -55,7 +55,7 @@ return [
         [
             'role' => 'user',
             'controller' => 'batch-venues',
-            'action' => ['index', 'edit', 'add', 'delete', 'load-csv-file', 'loadCsvFile'],
+            'action' => ['index', 'edit', 'add', 'delete', 'load-csv-file', 'loadCsvFile', 'geocodeAddress'],
 
         ]
 

@@ -47,6 +47,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         }
         .admin legend { color: #2196f3 }
 
+        .admin button { cursor: auto }
+
         .admin input[type="text"], textarea {
 
             -webkit-appearance: none;

@@ -7,6 +7,7 @@ use Cake\Utility\Inflector;
 
 use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
+use Cake\Http\Client;
 
 use League\Csv\Reader;
 
@@ -88,7 +89,7 @@ class BatchVenuesController extends AppController
                 // return $this->redirect(['action' => 'index']);
                 return $this->redirect(['action' => 'add',
                         'file_offset' => intval($this->request->getQuery('file_offset') )+ 1 ,
-                        'filename' => $this->request->getQuery('csv_file.name') ] );
+                        'filename' => $this->request->getQuery('filename') ] );
             }
             $this->Flash->error(__('The batch venue could not be saved. Please, try again.'));
         }
@@ -102,11 +103,24 @@ class BatchVenuesController extends AppController
 
             $venue = $this->populateVenueTable($venue, $currentRow);
 
-            debug($venue);
+           // debug($venue);
+
+
+            $venue['country_id'] = $this->request->getQuery('country_id');
+            $venue['province_id'] = $this->request->getQuery('province_id');
+            $venue['city_id'] = $this->request->getQuery('city_id');
+            $venue['city_region_id'] = $this->request->getQuery('city_region_id');
+
+            $venue['geo_latt'] = $this->request->getQuery('lat');
+            $venue['geo_long'] = $this->request->getQuery('lng');
+
+
+
+
 
         }
 
-        debug($currentRow);
+        //debug($currentRow);
 
 
 
@@ -124,12 +138,17 @@ class BatchVenuesController extends AppController
         $services = $this->Venues->Services->find('list', ['limit' => 200]);
         $venueTypes = $this->Venues->VenueTypes->find('list', ['limit' => 200]);
 
+        // file_offset=3&filename=yelp-scrap-canada.csv
+
+
         $this->set(compact('venue', 'cities', 'countries', 'provinces', 'cityRegions', 'malls', 'chains', 'amenities', 'brands', 'cuisines', 'languages', 'products', 'services', 'venueTypes'));
         $this->set('_serialize', ['venue']);
     }
 
     // if file has been uploaded, pass it's name and offset back to form in query string
     public function loadCsvFile(){
+
+
 
       //  debug($this->request->getData() );
       //  debug($this->request->getQuery() );
@@ -206,15 +225,15 @@ class BatchVenuesController extends AppController
             'hours_mon' => $currentRow['Monday'] . ' - ' . $currentRow['MondayClose'],
             'hours_tue' => $currentRow['Tuesday'] . ' - ' . $currentRow['TuesdayClose'],
             'hours_wed' => $currentRow['Wednesday'] . ' - ' . $currentRow['WednesdayClose'],
-            'hours_thr' => $currentRow['Thursday'] . ' - ' . $currentRow['ThursdayClose'],
+            'hours_thu' => $currentRow['Thursday'] . ' - ' . $currentRow['ThursdayClose'],
             'hours_fri' => $currentRow['Friday'] . ' - ' . $currentRow['FridayClose'],
             'hours_sat' => $currentRow['Saturday'] . ' - ' . $currentRow['SaturdayClose'],
 
             'description' => trim( $currentRow['LongDesc'] ),
 
-            'venue_types' => [ '_ids' => [ 1 ] ] // default to store
+            'venue_types' => [ '_ids' => [ 1 ] ],  // default to store
 
-
+            'city_id' => $this->request->getQuery('cityId')
 
 
         ];
@@ -267,7 +286,158 @@ class BatchVenuesController extends AppController
 
 
 
+    public function geocodeAddress() {
 
+        $this->autoRender = false;
+
+        //  TEMP turn of encoding
+        $address = $this->request->getQuery('encodeAddress'); debug($address);
+
+        //exit;
+
+        $url ='https://maps.googleapis.com/maps/api/geocode/json';
+
+        $http = new Client();
+
+        // now geocode the address and
+
+        $response = $http->get($url, ['address' => $address ] );
+
+        if ( !$response->isOk() ) { debug($response); exit; }
+
+        //debug($response->body);
+
+        $addressBody = json_decode( $response->body  ); //debug($addressBody);
+
+        // get basic full address and geo-cords
+        $fullAddress = $addressBody->results[0]->formatted_address;
+        $lattLong = $addressBody->results[0]->geometry->location;
+
+
+        $addressParts = $addressBody->results[0]->address_components;
+
+        $country = '';
+
+        $province = '';
+        $city = '';
+        $cityRegion = '';
+
+        foreach( $addressParts as $i => $row) {
+
+            if ( in_array('country',$row->types) ) {
+                $country = $row->long_name;
+            }
+
+            if ( in_array('administrative_area_level_1',$row->types) &&  in_array('political',$row->types)  ) {
+                $province = $row->long_name;
+            }
+
+            if ( in_array('locality',$row->types) &&  in_array('political',$row->types)  ) {
+                $city = $row->long_name;
+            }
+            if (!$city) {
+                if ( in_array('postal_town',$row->types) ) {
+                    $city = $row->long_name;
+                }
+            }
+
+            if ( in_array('sublocality',$row->types) &&  in_array('political',$row->types) && in_array('sublocality_level_1',$row->types)  ) {
+                $cityRegion = $row->long_name;
+            }
+            if (!$cityRegion) {
+                if ( in_array('neighborhood',$row->types) &&  in_array('political',$row->types)  ) {
+                    $cityRegion = $row->long_name;
+                }
+            }
+
+        }
+
+        // special case for New York
+        if ( empty($city) && $province == 'New York') {
+
+            foreach( $addressParts as $i => $row) {
+                if (in_array('political', $row->types) && in_array('sublocality', $row->types) && in_array('sublocality_level_1', $row->types)) {
+                    $city = $row->long_name;
+
+                }
+                if (in_array('neighborhood', $row->types) && in_array('political', $row->types)) {
+                    $cityRegion = $row->long_name;
+                }
+            }
+        }
+
+
+        // now save the address parts
+        $data = $this->saveAddressParts( $country, $province, $city, $cityRegion ); // /* $lattLong->lat, $lattLong->lng */
+
+//debug($data ); exit;
+
+
+
+        //$result = $this->uploadFile( ['csv_files'] , $this->request->getData('csv_file') );
+        //if (!$result) exit;
+
+        return $this->redirect( ['action' => 'add',
+            'file_offset' => intval($this->request->getQuery('file_offset') ),
+            'filename' => $this->request->getQuery('filename'),
+            'country_id' => $data['countryId'],
+            'province_id' => $data['provinceId'],
+            'city_id' => $data['cityId'],
+            'city_region_id' => $data['cityRegionId'],
+            'lat' => $lattLong->lat,
+            'lng' => $lattLong->lng
+        ]);
+
+
+        /*
+    'countryId' => (int) 5,
+	'provinceId' => (int) 11,
+	'provinceRegionId' => (int) 0,
+	'cityId' => (int) 82,
+	'cityRegionId' => (int) 31
+         */
+
+
+    }
+
+
+    public function saveAddressParts( $country, $province, $city, $cityRegion = null, $geoLat = null, $geoLng = null ) {
+
+
+        $data = [
+            'country' => $country,
+            'province' => $province,
+            //'provinceRegion' => $provinceRegion,
+            //'provinceRegionLatt' => $provinceRegionLatt,
+            //'provinceRegionLong' => $provinceRegionLong,
+            'city' => $city,
+            //'cityLatt' => $cityLatt,
+            //'cityLong' => $cityLong,
+            'cityRegion' => $cityRegion,
+            //'cityRegionLatt' => $cityRegionLatt,
+            //'cityRegionLong' => $cityRegionLong,
+            //'admin3' => $adminRegion3,
+            //'admin4' => $adminRegion4,
+            //'admin5' => $adminRegion5,
+            'geoLatt' => $geoLat,
+            'geoLong' => $geoLng
+        ];
+
+
+       // debug($data); // exit;
+        $this->loadComponent('Geocode');
+
+        $data = $this->Geocode->saveGeoData($data);
+
+        return $data;
+
+        //debug($result);
+
+        // save previminary venue data
+
+
+
+    }
 
 
     /**
