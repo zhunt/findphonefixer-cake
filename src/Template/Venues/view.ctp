@@ -76,16 +76,7 @@ $this->assign('meta_description', $venue['seo_desc']);
 
     <div class="columns small-12 medium-4 flex-container ">
         <div class="card profile-picture">
-            <?php if ( !empty($venue->photos) ) {
-                $imageFile = json_decode( $venue->photos);
-                if ( !empty($imageFile->image1) ) {
-                    //$imageFile->image1 = 'http://res.cloudinary.com/yyztech-group-media/image/upload/c_fill,h_415,w_555/v1499068521/i1xtc9idshfynuhners7.jpg';
-                    echo '<img src="' . $imageFile->image1 . '" title="Photo: copyright owner">'; // 555x415, set to fill
-                }
-            } else {
-                echo '<img src="/assets/img/placeholder-555.png" title="Photo: copyright owner">';
-            }
-            ?>
+            <img src="<?php echo $this->Venue->getProfileImage($venue) ?>" title="Photo: copyright owner">
             <div class="card-section text-center">
                 <p>
                     <small><i>Photo: provided by <?php echo h($venue['name']);?></i></small>
