@@ -31,11 +31,16 @@
                                 <?php endif; ?>
                             </h4>
                         </div>
-                        <?php if (!empty($venue['photos'])): ?>
-                            <img class="card-image" src="<?php echo $venue['photos'] ?>">
-                        <?php else: ?>
-                            <img class="card-image" src="/assets/img/placeholder-555.png">
-                        <?php endif; ?>
+                        <?php if ( !empty($venue->photos) ) {
+                            $imageFile = json_decode( $venue->photos);
+                            if ( !empty($imageFile->image1) ) {
+                                //$imageFile->image1 = 'http://res.cloudinary.com/yyztech-group-media/image/upload/c_fill,h_415,w_555/v1499068521/i1xtc9idshfynuhners7.jpg';
+                                echo '<img src="' . $imageFile->image1 . '" title="Photo: copyright owner">'; // 555x415
+                            }
+                        } else {
+                            echo '<img src="/assets/img/placeholder-555.png" title="Photo: copyright owner">';
+                        }
+                        ?>
                         <div class="card-section text-center">
                             <p>
                                 <?php echo h($venue->prefered_address);?>

@@ -49,7 +49,7 @@
 
             <div class="column">
 
-    <?= $this->Form->create($venue) ?>
+    <?= $this->Form->create($venue, ['type' => 'file'] ) ?>
     <fieldset>
         <legend><?= __('Edit Venue') ?></legend>
         <?php
@@ -103,6 +103,9 @@
                     <div class="column">
                         <?php echo $this->Form->control('photos'); ?>
                     </div>
+                </div>
+                <div class="row column">
+                    <?php echo $this->Form->control('upload_image_file', ['type' =>  'file']); ?>
                 </div>
             </fieldset>
         </div>

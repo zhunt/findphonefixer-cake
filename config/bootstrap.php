@@ -233,4 +233,8 @@ Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 Configure::write('wpRestApi', 'http://findphonefixer.com/blog/wp-json/wp/v2/posts');
 
 // https://cloudinary.com/console
+Configure::write('cloudinary.name', 'yyztech-group-media');
+Configure::write('cloudinary.apikey','566497559949225');
+Configure::write('cloudinary.apikeySecret','q5JshDJXcLCk6JnpmIHktLv2WR8');
+Configure::write('cloudinary.path', 'CLOUDINARY_URL=cloudinary://566497559949225:q5JshDJXcLCk6JnpmIHktLv2WR8@yyztech-group-media');
 
