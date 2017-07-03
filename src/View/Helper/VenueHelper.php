@@ -94,8 +94,9 @@ class VenueHelper extends Helper
 
                 $pos = strrpos($imageFile->image1, '/');
                 $imageFilename = $pos === false ? $imageFile->image1 : substr($imageFile->image1, $pos + 1);
-                
+
                 if ($imageFilename) {
+                    // TODO: need check if image exits, seems to presist afte deletion
                     return cloudinary_url($imageFilename, [ "height"=>415, "quality"=>"auto", "width"=>555, "crop"=>"fill", "fetch_format"=>"auto", "cloud_name" => Configure::read('cloudinary.name') ] );
                 } else {
                     return '/assets/img/placeholder-555.png';
