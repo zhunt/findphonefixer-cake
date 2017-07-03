@@ -131,6 +131,17 @@ class VenuesController extends AppController
         $this->set('_serialize', ['venue']);
     }
 
+
+    public function uploadImageCloudinary() {
+        // \Cloudinary\Uploader::upload('my_image.jpg', array("public_id" => "john_doe_1001"));
+
+        $uploadPath = WWW_ROOT . venue_uploads . DS;
+        $image = 'areodrone-logo.png';
+
+        //
+
+    }
+
     /**
      * Delete method
      *

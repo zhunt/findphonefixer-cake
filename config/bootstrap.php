@@ -229,4 +229,8 @@ Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 
 // Site-wide
 
+//
 Configure::write('wpRestApi', 'http://findphonefixer.com/blog/wp-json/wp/v2/posts');
+
+// https://cloudinary.com/console
+

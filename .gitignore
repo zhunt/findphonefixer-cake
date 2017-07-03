@@ -1,7 +1,10 @@
 /vendor/*
 /config/app.php
+/config/bootstrap.php
 /tmp/*
 /logs/*
 .idea/*
 /webroot/csv_files/*
+/webroot/venue_uploads/*
+
 
