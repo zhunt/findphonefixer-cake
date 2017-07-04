@@ -52,10 +52,14 @@
 <section class="hero inside-page">
     <div class="columns row search-form">
         <div class="input-group">
-            <input class="input-group-field" type="text" placeholder="Enter a place or city to search"/>
-            <div class="input-group-button">
-                <input type="submit" class="button" value="Search">
+
+
+            <div class="aa-input-container" id="aa-input-container">
+                <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for players or teams..." name="search" autocomplete="off" />
             </div>
+
+
+
         </div>
     </div>
 </section>

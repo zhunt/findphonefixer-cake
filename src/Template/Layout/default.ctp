@@ -46,5 +46,43 @@ $cakeDescription = 'FindPhoneFixer.com - find your phone repair spot.';
 
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDoAxSn-EXf2vJSj3LRH9FIFNyz7JuGf8U"></script>
     <script src="/assets/js/app.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+
+            var client = algoliasearch("V7S01MILH0", "c95afb6b5bc53306095ea2d647b644d2");
+            var index = client.initIndex('site_findphonefixer');
+
+            //initialize autocomplete on search input (ID selector must match)
+            $('#aa-search-input').autocomplete(
+                {hint: false}, [
+                    {
+                        source: $.fn.autocomplete.sources.hits(index, { hitsPerPage: 5 }),
+                        //value to be displayed in input control after user's suggestion selection
+                        displayKey: 'name',
+                        //hash of templates used when rendering dataset
+                        templates: {
+                            header: '<div class="aa-suggestions-category">Players</div>',
+                            //'suggestion' templating function used to render a single suggestion
+                            suggestion: function(suggestion) {
+                                return '<span>' +
+                                    suggestion._highlightResult.name.value + '</span><span>' +
+                                    suggestion._highlightResult.address.value + '</span>';
+                            },
+                            empty: '<div class="aa-empty">No matching players</div>'
+
+
+                        }
+                    }
+                ]).on('autocomplete:selected', function(event, suggestion, dataset) {
+                window.location = 'http://localhost:8085/venue/' + suggestion.venue_slug;
+            });
+        }
+    );
+</script>
+
 </body>
 </html>
