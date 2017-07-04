@@ -47,14 +47,16 @@ $cakeDescription = 'FindPhoneFixer.com - find your phone repair spot.';
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDoAxSn-EXf2vJSj3LRH9FIFNyz7JuGf8U"></script>
     <script src="/assets/js/app.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
 
 <script>
     $(document).ready(function(){
 
             var client = algoliasearch("V7S01MILH0", "c95afb6b5bc53306095ea2d647b644d2");
             var index = client.initIndex('site_findphonefixer');
+
 
             //initialize autocomplete on search input (ID selector must match)
             $('#aa-search-input').autocomplete(
@@ -65,14 +67,12 @@ $cakeDescription = 'FindPhoneFixer.com - find your phone repair spot.';
                         displayKey: 'name',
                         //hash of templates used when rendering dataset
                         templates: {
-                            header: '<div class="aa-suggestions-category">Players</div>',
+                            //header: '<div class="aa-suggestions-category">Venues:</div>',
                             //'suggestion' templating function used to render a single suggestion
                             suggestion: function(suggestion) {
-                                return '<span>' +
-                                    suggestion._highlightResult.name.value + '</span><span>' +
-                                    suggestion._highlightResult.address.value + '</span>';
+                                return '<p><b>' + suggestion._highlightResult.name.value + '</b><br>' + suggestion._highlightResult.address.value + '</p>';
                             },
-                            empty: '<div class="aa-empty">No matching players</div>'
+                            empty: '<div class="aa-empty"><b>No matching places</b></div>'
 
 
                         }
@@ -83,6 +83,7 @@ $cakeDescription = 'FindPhoneFixer.com - find your phone repair spot.';
         }
     );
 </script>
+
 
 </body>
 </html>

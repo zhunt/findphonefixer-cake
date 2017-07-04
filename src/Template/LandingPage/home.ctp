@@ -19,10 +19,9 @@ $this->assign('meta_description', 'Where to find cell phone repair, iPhone, Sams
         <img src="/assets/img/findphonefixer-logo.png" class="logo slow almost-hidden" id="homepage-logo" title="FindPhoneFixer.com" alt="Find Phone Fixer logo" >
     </div>
     <div class="columns row search-form">
-        <div class="input-group">
-            <input class="input-group-field" type="text" placeholder="Enter a place or city to search">
-            <div class="input-group-button">
-                <input type="submit" class="button" value="Search">
+        <div class="columns row search-form">
+            <div class="input-group aa-input-container input-group-button" id="aa-input-container">
+                <input class="input-group-field" type="text" id="aa-search-input" placeholder="Enter a place or city to search">
             </div>
         </div>
     </div>

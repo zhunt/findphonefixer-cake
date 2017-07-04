@@ -53,12 +53,11 @@
     <div class="columns row search-form">
         <div class="input-group">
 
-
-            <div class="aa-input-container" id="aa-input-container">
-                <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for players or teams..." name="search" autocomplete="off" />
+            <div class="columns row search-form">
+                <div class="input-group aa-input-container input-group-button" id="aa-input-container">
+                    <input class="input-group-field" type="text" id="aa-search-input" placeholder="Enter a place or city to search">
+                </div>
             </div>
-
-
 
         </div>
     </div>
