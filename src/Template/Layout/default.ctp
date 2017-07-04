@@ -1,4 +1,6 @@
 <?php
+use Cake\Core\Configure;
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -54,8 +56,8 @@ $cakeDescription = 'FindPhoneFixer.com - find your phone repair spot.';
 <script>
     $(document).ready(function(){
 
-            var client = algoliasearch("V7S01MILH0", "c95afb6b5bc53306095ea2d647b644d2");
-            var index = client.initIndex('site_findphonefixer');
+            var client = algoliasearch("<?php echo Configure::read('algolia.appId') ?>", "<?php echo Configure::read('algolia.apikey') ?>");
+            var index = client.initIndex("<?php echo Configure::read('algolia.indexName'); ?>");
 
 
             //initialize autocomplete on search input (ID selector must match)
@@ -78,7 +80,7 @@ $cakeDescription = 'FindPhoneFixer.com - find your phone repair spot.';
                         }
                     }
                 ]).on('autocomplete:selected', function(event, suggestion, dataset) {
-                window.location = 'http://localhost:8085/venue/' + suggestion.venue_slug;
+                window.location = '/venue/' + suggestion.venue_slug;
             });
         }
     );

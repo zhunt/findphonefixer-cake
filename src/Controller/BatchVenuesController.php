@@ -86,7 +86,11 @@ class BatchVenuesController extends AppController
         $venue = $this->Venues->newEntity();
         if ($this->request->is('post')) {
             $venue = $this->Venues->patchEntity($venue, $this->request->getData());
-            if ($this->Venues->save($venue)) {
+
+            $result= $this->Venues->save($venue);
+            if ($result) {
+                $this->updateindex( $result->id);
+
                 $this->Flash->success(__('The venue has been saved.'));
 
                 // return $this->redirect(['action' => 'index']);
@@ -498,13 +502,21 @@ class BatchVenuesController extends AppController
 
 
 
-    public function updateindex() {
+    public function updateindex( $id = null) {
         $this->loadModel('Venues');
 
-        $venues = $this->Venues->find()
-            ->contain(['Cities', 'Countries', 'Provinces', 'CityRegions', 'Malls', 'Chains', 'Amenities', 'Brands', 'Cuisines', 'Languages', 'Products', 'Services', 'VenueTypes'])
-            ->where(['Venues.flag_published' => true ])
-            ->limit(10);
+        if ( empty($id)) {
+            $venues = $this->Venues->find()
+                ->contain(['Cities', 'Countries', 'Provinces', 'CityRegions', 'Malls', 'Chains', 'Amenities', 'Brands', 'Cuisines', 'Languages', 'Products', 'Services', 'VenueTypes'])
+                ->where(['Venues.flag_published' => true ])
+                ->limit(10);
+        } else {
+            $venues = $this->Venues->find()
+                ->contain(['Cities', 'Countries', 'Provinces', 'CityRegions', 'Malls', 'Chains', 'Amenities', 'Brands', 'Cuisines', 'Languages', 'Products', 'Services', 'VenueTypes'])
+                ->where(['Venues.flag_published' => true, 'Venues.id' => $id  ])
+                ->limit(1);
+        }
+
 
       // debug($venues);
 
@@ -538,30 +550,23 @@ class BatchVenuesController extends AppController
 
         //$jsonArray = json_encode( $jsonArray);
 
-        debug($jsonArray);
+        //debug($jsonArray);
 
 
         $client = new \AlgoliaSearch\Client(Configure::read('algolia.appId'), Configure::read('algolia.apikeySecret') );
 
-        debug($client);
+        //debug($client);
 
-        $index = $client->initIndex('site_findphonefixer');
+        $index = $client->initIndex( Configure::read('algolia.indexName') );
 
-        debug($index);
-
-        /*
-        $records = [
-            ['name' => 'Tom Cruise'],
-            ['name' => 'Scarlett Johansson']
-        ];
-        */
+        //debug($index);
 
         //$index->addObjects($jsonArray);
 
         $index->saveObjects($jsonArray);
 
 
-        debug('here 1');
+       // debug('here 1');
 
 
     }

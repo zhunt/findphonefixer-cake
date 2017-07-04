@@ -31,7 +31,7 @@ class LatestVenuesCell extends Cell
 
         $showCityName = false;
 
-        $venues = $this->Venues->find('homepageVenues')->order('Venues.created')->limit(4);
+        $venues = $this->Venues->find('homepageVenues')->order('Venues.created DESC')->limit(4);
 
         if ( !empty($cityId) ) {
             $venues->where([ 'Venues.city_id' => $cityId ]);

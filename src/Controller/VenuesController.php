@@ -8,6 +8,8 @@ use Cake\Filesystem\File;
 
 use Cake\Core\Configure;
 
+use Cake\Utility\Hash;
+
 /**
  * Venues Controller
  *
@@ -74,7 +76,9 @@ class VenuesController extends AppController
         $venue = $this->Venues->newEntity();
         if ($this->request->is('post')) {
             $venue = $this->Venues->patchEntity($venue, $this->request->getData());
-            if ($this->Venues->save($venue)) {
+            $result=$this->Venues->save($venue);
+            if ( $result) {
+                $this->updateindex( $result->id);
                 $this->Flash->success(__('The venue has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -114,6 +118,7 @@ class VenuesController extends AppController
             $this->uploadImageCloudinary($id); // handle uploading any images (only 1 for now)
             $venue = $this->Venues->patchEntity($venue, $this->request->getData());
             if ($this->Venues->save($venue)) {
+                $this->updateindex($id);
                 $this->Flash->success(__('The venue has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -209,6 +214,72 @@ class VenuesController extends AppController
          */
 
     }
+
+
+    /*
+     * Updates or ads the Algolia Search index for this venue
+     */
+    public function updateindex($venueId) {
+        $this->loadModel('Venues');
+
+        $venues = $this->Venues->find()
+            ->contain(['Cities', 'Countries', 'Provinces', 'CityRegions', 'Malls', 'Chains', 'Amenities', 'Brands', 'Cuisines', 'Languages', 'Products', 'Services', 'VenueTypes'])
+            ->where(['Venues.flag_published' => true, 'Venues.id' => $venueId  ])
+            ->limit(1);
+
+        // debug($venues);
+
+        $jsonArray = [];
+        foreach ($venues as $venue) { //debug($venue);
+
+
+
+            $jsonArray[] = [
+                'objectID' =>  Configure::read('siteId') . '_' . $venue->id,
+                'name' => trim($venue->name . ' '  . $venue->subname),
+                'address' => ( !empty($venue->display_address) ? $venue->display_address : $venue->address ),
+                'city_region' => ( isset($venue->city_region->name) ) ? $venue->city_region->name : '',
+                'city' => $venue->city->name,
+                'province' => $venue->province->name,
+                'country' => $venue->country->name,
+                'services' => $this->getVenueTypes($venue->services),
+                'venue_types' => $this->getVenueTypes($venue->venue_types),
+                'products' => $this->getVenueTypes($venue->products),
+                'languages' => $this->getVenueTypes($venue->languages),
+                'description' => substr($venue->description, 0,300 ),
+                '_geoloc' => [
+                    'lat' => floatval($venue->geo_latt),
+                    'lng' => floatval($venue->geo_long),
+                ],
+                'phone' => ( !empty($venue->phone) ) ? json_decode($venue->phone)->phone : '',
+                'venue_id' => $venue->id,
+                'venue_slug' => $venue->slug
+            ];
+        }
+
+        //$jsonArray = json_encode( $jsonArray);
+
+        $client = new \AlgoliaSearch\Client(Configure::read('algolia.appId'), Configure::read('algolia.apikeySecret') );
+
+        $index = $client->initIndex( Configure::read('algolia.indexName') );
+
+        //$index->addObjects($jsonArray);
+
+        $index->saveObjects($jsonArray);
+        
+    }
+
+    public function getVenueTypes( $types) {
+        if ( !isset($types[0]->name) ) return '';
+
+        $results = Hash::extract($types, '{n}.name');
+
+        $results = implode(', ' , $results);
+
+        return $results;
+    }
+
+
 
     /**
      * Delete method
