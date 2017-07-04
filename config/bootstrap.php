@@ -230,6 +230,8 @@ Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 // Site-wide
 
 //
+Configure::write('siteId', 'FindPhoneFixer');
+
 Configure::write('wpRestApi', 'http://findphonefixer.com/blog/wp-json/wp/v2/posts');
 
 // https://cloudinary.com/console
@@ -237,4 +239,13 @@ Configure::write('cloudinary.name', 'yyztech-group-media');
 Configure::write('cloudinary.apikey','566497559949225');
 Configure::write('cloudinary.apikeySecret','q5JshDJXcLCk6JnpmIHktLv2WR8');
 Configure::write('cloudinary.path', 'CLOUDINARY_URL=cloudinary://566497559949225:q5JshDJXcLCk6JnpmIHktLv2WR8@yyztech-group-media');
+
+// https://www.algolia.com/apps/V7S01MILH0/api-keys
+Configure::write('algolia.appId', 'V7S01MILH0');
+Configure::write('algolia.apikey', 'c95afb6b5bc53306095ea2d647b644d2');
+Configure::write('algolia.apikeySecret', '88e7d20de5ed32fc17f134322f7d3c4e');
+Configure::write('siteId', 'FindPhoneFixer'); // used for generating objectID
+
+Configure::write('algolia.indexName','site_findphonefixer');
+
 

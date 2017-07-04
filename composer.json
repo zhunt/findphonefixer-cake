@@ -15,7 +15,8 @@
         "league/oauth2-google": "@stable",
         "league/oauth2-facebook": "@stable",
         "league/csv": "^8.2",
-        "cloudinary/cloudinary_php": "^1.8"
+        "cloudinary/cloudinary_php": "^1.8",
+        "algolia/algoliasearch-client-php": "^1.18"
     },
     "require-dev": {
         "psy/psysh": "@stable",

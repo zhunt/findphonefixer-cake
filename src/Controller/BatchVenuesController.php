@@ -8,7 +8,10 @@ use Cake\Utility\Inflector;
 use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
 use Cake\Http\Client;
+use Cake\Core\Configure;
+use Cake\Utility\Hash;
 
+use Composer\Config;
 use League\Csv\Reader;
 
 
@@ -31,7 +34,7 @@ class BatchVenuesController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow( ['index', 'add', 'loadCsvFile', 'load-csv-file', ]); // make these pages public
+        $this->Auth->allow( ['index', 'add', 'loadCsvFile', 'load-csv-file', 'updateindex' ]); // make these pages public FOR NOW
 
         $this->viewBuilder()->setLayout('default-admin');
     }
@@ -455,7 +458,7 @@ class BatchVenuesController extends AppController
     // parses string of services offered, returns array of
     public function getProductsServcies($row) {
 
-        debug($row);
+        //debug($row);
         // Computers, Mobile Phones, IT Services & Computer & Laptop Repair
         // Mobile Phones, Electrical Repairs, Mobile Phone Repair
 
@@ -490,6 +493,99 @@ class BatchVenuesController extends AppController
 
         return($productsServices);
     }
+
+
+
+
+
+    public function updateindex() {
+        $this->loadModel('Venues');
+
+        $venues = $this->Venues->find()
+            ->contain(['Cities', 'Countries', 'Provinces', 'CityRegions', 'Malls', 'Chains', 'Amenities', 'Brands', 'Cuisines', 'Languages', 'Products', 'Services', 'VenueTypes'])
+            ->where(['Venues.flag_published' => true ])
+            ->limit(10);
+
+      // debug($venues);
+
+        $jsonArray = [];
+        foreach ($venues as $venue) { //debug($venue);
+
+
+
+            $jsonArray[] = [
+                'objectID' =>  Configure::read('siteId') . '_' . $venue->id,
+                'name' => trim($venue->name . ' '  . $venue->subname),
+                'address' => ( !empty($venue->display_address) ? $venue->display_address : $venue->address ),
+                'city_region' => ( isset($venue->city_region->name) ) ? $venue->city_region->name : '',
+                'city' => $venue->city->name,
+                'province' => $venue->province->name,
+                'country' => $venue->country->name,
+                'services' => $this->getVenueTypes($venue->services),
+                'venue_types' => $this->getVenueTypes($venue->venue_types),
+                'products' => $this->getVenueTypes($venue->products),
+                'languages' => $this->getVenueTypes($venue->languages),
+                'description' => substr($venue->description, 0,300 ),
+                '_geoloc' => [
+                    'lat' => floatval($venue->geo_latt),
+                    'lng' => floatval($venue->geo_long),
+                ],
+                'phone' => ( !empty($venue->phone) ) ? json_decode($venue->phone)->phone : '',
+                'venue_id' => $venue->id,
+                'venue_slug' => $venue->slug
+            ];
+        }
+
+        //$jsonArray = json_encode( $jsonArray);
+
+        debug($jsonArray);
+
+
+        $client = new \AlgoliaSearch\Client(Configure::read('algolia.appId'), Configure::read('algolia.apikeySecret') );
+
+        debug($client);
+
+        $index = $client->initIndex('site_findphonefixer');
+
+        debug($index);
+
+        /*
+        $records = [
+            ['name' => 'Tom Cruise'],
+            ['name' => 'Scarlett Johansson']
+        ];
+        */
+
+        //$index->addObjects($jsonArray);
+
+        $index->saveObjects($jsonArray);
+
+
+        debug('here 1');
+
+
+    }
+
+
+    public function getVenueTypes( $types) {
+        if ( !isset($types[0]->name) ) return '';
+
+        $results = Hash::extract($types, '{n}.name');
+
+        $results = implode(', ' , $results);
+
+        return $results;
+    }
+
+    /*
+'services' => [
+		(int) 0 => object(App\Model\Entity\Service) {
+
+			'id' => (int) 11,
+			'name' => 'Mobile Phone Repair',
+			'slug' => 'mobile-phone-repair',
+			'created' => object(Cake\I18n\FrozenTime) {
+ */
 
 
     /**
