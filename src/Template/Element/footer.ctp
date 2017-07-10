@@ -2,7 +2,7 @@
     <div class="row medium-unstack align-middle">
         <div class="medium-8 columns">
             <h4 class="marketing-site-footer-name">FindPhoneFixer</h4>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita dolorem accusantium architecto id quidem, itaque nesciunt quam ducimus atque.</p>
+            <p>FindPhoneFixer.com lets you find places that fix cell phones, iPhones, repair tablets and other smartphones.</p>
 
         </div>
         <div class="medium-4 columns">
@@ -29,12 +29,14 @@
             </div>
             <div class="column">
                 <ul class="menu marketing-site-footer-bottom-links">
+                    <!--
                     <li><a href="#">Home</a></li>
                     <li><a href="#">About</a></li>
                     <li><a href="#">Services</a></li>
                     <li><a href="#">Works</a></li>
                     <li><a href="#">News</a></li>
                     <li><a href="#">Contact</a></li>
+                    -->
                 </ul>
             </div>
         </div>

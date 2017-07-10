@@ -34,7 +34,7 @@ class BatchVenuesController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow( ['index', 'add', 'loadCsvFile', 'load-csv-file', 'updateindex' ]); // make these pages public FOR NOW
+        //$this->Auth->allow( ['index', 'add', 'loadCsvFile', 'load-csv-file', 'updateindex' ]); // make these pages public FOR NOW
 
         $this->viewBuilder()->setLayout('default-admin');
     }

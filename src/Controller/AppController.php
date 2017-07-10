@@ -71,6 +71,8 @@ class AppController extends Controller
         if ( isset( $this->Auth->user ) ) {
             $this->set('userLoggedIn', $this->Auth->user('id') );
         }
+        
+        debug($this->request->url );
 
 
 //debug($this->Auth->user('id'));

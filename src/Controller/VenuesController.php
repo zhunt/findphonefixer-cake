@@ -266,7 +266,7 @@ class VenuesController extends AppController
         //$index->addObjects($jsonArray);
 
         $index->saveObjects($jsonArray);
-        
+
     }
 
     public function getVenueTypes( $types) {

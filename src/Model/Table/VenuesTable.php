@@ -243,7 +243,7 @@ class VenuesTable extends Table
  * function returns distance in Km
  */
     // pass in:  ['geo_latt', 'geo_long', 'venueId' ]
-    function findNearbyVenues(Query $query, $options) {
+    public function findNearbyVenues(Query $query, $options) {
         $distance = 10; // 1 = 1000 metres, 10 = 10km
         $limit = 10;
 
@@ -257,7 +257,7 @@ class VenuesTable extends Table
                                 sin( radians( Venues.geo_latt ) ) ) )';
 
         return $query
-            ->where([ 'Venues.flag_published' => 1, 'Venues.id !=' => $venueId, 'geo_latt IS NOT NULL'  ])
+            ->where([ 'Venues.flag_published' => true, 'Venues.id !=' => $venueId, 'geo_latt IS NOT NULL'  ])
             ->select(['id', 'name', 'sub_name', 'slug', 'address', 'geo_latt', 'geo_long', 'distance' => $distanceField])
             ->limit($limit)
             ->group('Venues.id')

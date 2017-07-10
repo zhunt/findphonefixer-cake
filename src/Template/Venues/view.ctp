@@ -4,7 +4,7 @@
   * @var \App\Model\Entity\Venue $venue
   */
 
-debug($venue->toArray());
+// debug($venue->toArray());
 
 $this->assign('title', $venue['seo_title']);
 $this->assign('meta_description', $venue['seo_desc']);
