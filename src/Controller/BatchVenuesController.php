@@ -521,7 +521,7 @@ class BatchVenuesController extends AppController
       // debug($venues);
 
         $jsonArray = [];
-        foreach ($venues as $venue) { //debug($venue);
+        foreach ($venues as $venue) { // debug($venue);
 
 
 
