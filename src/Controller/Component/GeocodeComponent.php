@@ -43,7 +43,7 @@ class GeocodeComponent extends Component
     function geocodeAddress($address) {
 
         $this->Geocoder = new Geocoder();
-        $this->Geocoder->config(['allowInconclusive' => true, 'minAccuracy' => Geocoder::TYPE_POSTAL]); // debug($address);
+        $this->Geocoder->setOptions(['allowInconclusive' => true, 'minAccuracy' => Geocoder::TYPE_POSTAL]); // debug($address);
         $addresses = $this->Geocoder->geocode($address);
 
         //debug($addresses);
@@ -165,10 +165,12 @@ class GeocodeComponent extends Component
 
             if ($countriesTable->save($country)) {
                 $countryId = $country->id;
+                $countrySlug = $country->slug;
             }
 
         } else {
             $countryId = $result->id;
+            $countrySlug = $result->slug;
         }
 
         // Province
@@ -187,10 +189,12 @@ class GeocodeComponent extends Component
 
             if ($provincesTable->save($province)) {
                 $provinceId = $province->id;
+                $provinceSlug = $province->slug;
             }
 
         } else {
             $provinceId = $result->id;
+            $provinceSlug = $result->slug;
         }
 
         // if province region set ** Note: probably dropped **
@@ -212,11 +216,16 @@ class GeocodeComponent extends Component
 
                 if ($provinceRegionsTable->save($provinceRegion)) {
                     $provinceRegionId = $provinceRegion->id;
+                    $provinceRegionSlug = $provinceRegion->slug;
                 }
 
             } else {
                 $provinceRegionId = $result->id;
+                $provinceRegionSlug = $result->slug;
             }
+
+        } else {
+            $provinceRegionSlug = ''; // just set to empty if there's no cityRegion
 
         }
 
@@ -248,10 +257,12 @@ class GeocodeComponent extends Component
 
                 if ($citiesTable->save($city)) {
                     $cityId = $city->id;
+                    $citySlug = $city->slug;
                 }
 
             } else {
                 $cityId = $result->id;
+                $citySlug = $result->slug;
             }
 
         }
@@ -288,20 +299,32 @@ class GeocodeComponent extends Component
 
                 if ($cityRegionsTable->save($cityRegion)) {
                     $cityRegionId = $cityRegion->id;
+                    $cityRegionSlug = $cityRegion->slug;
                 }
 
             } else {
                 $cityRegionId = $result->id;
+                $cityRegionSlug = $result->slug;
             }
 
+        } else {
+            $cityRegionSlug = '';
         }
 
         return ( [
             'countryId' => $countryId,
+            'countrySlug' => $countrySlug,
             'provinceId' => $provinceId,
+            'provinceSlug' => $provinceSlug,
             'provinceRegionId' => $provinceRegionId,
+            'provinceRegionSlug' => $provinceRegionSlug,
             'cityId' => $cityId,
-            'cityRegionId' => $cityRegionId
+            'citySlug' => $citySlug,
+            'cityRegionId' => $cityRegionId,
+            'cityRegionSlug' => $cityRegionSlug,
+            'geoLatt' => $geoData['geoLatt'],
+            'geoLong' => $geoData['geoLong']
+
         ]
         ) ;
 
@@ -314,7 +337,7 @@ class GeocodeComponent extends Component
 // --
 
         $this->Geocoder = new Geocoder();
-        $this->Geocoder->config(['allowInconclusive' => true, 'minAccuracy' => Geocoder::TYPE_POSTAL]);
+        $this->Geocoder->setOptions(['allowInconclusive' => true, 'minAccuracy' => Geocoder::TYPE_POSTAL]);
         //debug("{$cityName}, {$province['name']}, {$country['name']}");
         $addresses = $this->Geocoder->geocode( "{$cityName}, {$province['name']}, {$country['name']}");
 
