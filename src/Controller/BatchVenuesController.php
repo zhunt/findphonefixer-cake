@@ -16,6 +16,16 @@ use League\Csv\Reader;
 
 
 
+/*
+ * Notes:
+ * start here to import CSV file into JSON
+ * http://localhost:8085/batch-venues/import-venues-csv  #this will create an editable json file to import
+ *
+ * Load in JSON file and save to DB
+ * http://localhost:8085/batch-venues/save-json-file?filename=houston-phones-only.csv #filename with .json
+ *
+ */
+
 
 /**
  * BatchVenues Controller
@@ -111,9 +121,6 @@ class BatchVenuesController extends AppController
             $venue = $this->populateVenueTable($venue, $currentRow);
 
 
-            // debug($venue);
-
-
             $venue['country_id'] = $this->request->getQuery('country_id');
             $venue['province_id'] = $this->request->getQuery('province_id');
             $venue['city_id'] = $this->request->getQuery('city_id');
@@ -124,8 +131,6 @@ class BatchVenuesController extends AppController
 
 
         }
-
-        //debug($currentRow);
 
 
         $cities = $this->Venues->Cities->find('list', ['limit' => 200, 'groupField' => 'province.name'])->contain(['Provinces'])->order(['Provinces.name', 'Cities.name']);
@@ -153,9 +158,6 @@ class BatchVenuesController extends AppController
     public function loadCsvFile()
     {
 
-
-        //  debug($this->request->getData() );
-        //  debug($this->request->getQuery() );
         $this->autoRender = false;
         $result = $this->uploadFile(['csv_files'], $this->request->getData('csv_file'));
         if (!$result) exit;
@@ -173,7 +175,7 @@ class BatchVenuesController extends AppController
     }
 
     public function uploadFile($path = array(), $filetoupload = null)
-    { //debug($path); debug($filetoupload);
+    {
         if (!$filetoupload) {
             return false;
         }
@@ -197,11 +199,8 @@ class BatchVenuesController extends AppController
     // reads filename and offset from query string
     public function getCurrentCsvRow()
     {
-
         $filename = $this->request->getQuery('filename');
         $fileRowOffset = $this->request->getQuery('file_offset');
-
-        //debug(  WWW_ROOT  . 'csv_files' . DS .  $filename );
 
         $reader = Reader::createFromPath(WWW_ROOT . 'csv_files' . DS . $filename);
 
@@ -221,11 +220,7 @@ class BatchVenuesController extends AppController
     // reads data from array (from csv file)
     public function populateVenueTable($venue, $currentRow)
     {
-
         $productsServices = $this->getProductsServcies($currentRow['Category']); // array of both split
-
-        //debug($productsServices);
-
 
         $data = [
             'name' => $currentRow['Name'],
@@ -246,7 +241,6 @@ class BatchVenuesController extends AppController
 
             'services' => $productsServices['services'],
             'products' => $productsServices['products'],
-
 
             'venue_types' => ['_ids' => [1]],  // default to store
 
@@ -755,6 +749,9 @@ class BatchVenuesController extends AppController
                 }
                 echo 'End of file';
 
+                $csvFile = $this->request->getQuery('filename');
+                echo "<p><a href=\"/batch-venues/save-json-file?filename={$csvFile}\">Click Here to import file.</a></p>";
+
                // $venue = $this->populateVenueTable($venue, $currentRow);
 
 
@@ -857,7 +854,7 @@ class BatchVenuesController extends AppController
 
             $data['slug'] = "{$data['slug']}-{$data['citySlug']}"; // add the city name the venue slug
 
-            $data['checkcode'] = substr( trim(preg_replace( '/[^0-9]/', '', $data['phone']  ) ), -8 );
+            $data['checkcode'] = substr( trim(preg_replace( '/[^0-9]/', '', $data['phone']  ) ), -10 );
 
 
             // echo json_encode( $data );
@@ -871,123 +868,215 @@ class BatchVenuesController extends AppController
 
         }
 
-        // ---------------
-    public function geocodeAddress2( $address)
+    public function saveJsonFile()
     {
 
-        $this->autoRender = false;
+        //$this->autoRender = false;
 
-        //  TEMP turn of encoding
-        //$address = $this->request->getQuery('encodeAddress'); //debug($address);
+        // open the json file up
+        $jsonFile = $this->request->getQuery('filename');
 
-        //exit;
+        if ( $jsonFile) {
+            $file = new File( WWW_ROOT . 'csv_files' . DS . $jsonFile . '.json'); // add json extension to file to load
+            $contents = $file->read();
+            $file->close(); //debug($contents);
 
-        $url = 'https://maps.googleapis.com/maps/api/geocode/json';
+            $data = json_decode($contents, true);
 
-        $http = new Client();
+            if ( is_array($data)) {
+               // debug($data);
 
-        // now geocode the address and
-
-        $response = $http->get($url, ['address' => $address]);
-
-        if (!$response->isOk()) {
-            debug($response);
-            exit;
-        }
-
-        //debug($response->body);
-
-        $addressBody = json_decode($response->body); //debug($addressBody);
-
-        // get basic full address and geo-cords
-        $fullAddress = $addressBody->results[0]->formatted_address;
-        $lattLong = $addressBody->results[0]->geometry->location;
+               // $data = [ reset($data) ]; // TEMP JUST FIRST ROW
 
 
-        $addressParts = $addressBody->results[0]->address_components;
 
-        $country = '';
+                foreach ($data as $i => $row) { // debug($row['checkcode']);
+                    // check if venue has entry in check table
+                    $venueId = $this->getCheckTable($row['checkcode']); //debug($venueId);
 
-        $province = '';
-        $city = '';
-        $cityRegion = '';
+                    if ($venueId) {
+                        $venueId = $this->saveJsonData( $row, $venueId );
+                    } else {
+                        $venueId = $this->saveJsonData( $row);
 
-        foreach ($addressParts as $i => $row) {
+                    }
+                    if ($venueId) {
+                        $this->setCheckTable($row['checkcode'], $venueId);
+                    } else {
+                        debug("VenueID not set");
+                    }
 
-            if (in_array('country', $row->types)) {
-                $country = $row->long_name;
-            }
 
-            if (in_array('administrative_area_level_1', $row->types) && in_array('political', $row->types)) {
-                $province = $row->long_name;
-            }
+                    // if so, get the venueId and we'll update that same entry
+                    //$venueId =
 
-            if (in_array('locality', $row->types) && in_array('political', $row->types)) {
-                $city = $row->long_name;
-            }
-            if (!$city) {
-                if (in_array('postal_town', $row->types)) {
-                    $city = $row->long_name;
+                    // else add new entry for this one.
+                    //$this->setCheckTable($row['checkcode'], '101');
+
+                    //exit;
                 }
             }
+            else {
+                debug('File not json');
+            }
 
-            if (in_array('sublocality', $row->types) && in_array('political', $row->types) && in_array('sublocality_level_1', $row->types)) {
-                $cityRegion = $row->long_name;
-            }
-            if (!$cityRegion) {
-                if (in_array('neighborhood', $row->types) && in_array('political', $row->types)) {
-                    $cityRegion = $row->long_name;
-                }
-            }
 
         }
-
-        // special case for New York
-        if (empty($city) && $province == 'New York') {
-
-            foreach ($addressParts as $i => $row) {
-                if (in_array('political', $row->types) && in_array('sublocality', $row->types) && in_array('sublocality_level_1', $row->types)) {
-                    $city = $row->long_name;
-
-                }
-                if (in_array('neighborhood', $row->types) && in_array('political', $row->types)) {
-                    $cityRegion = $row->long_name;
-                }
-            }
-        }
-
-
-        // now save the address parts
-        //$data = $this->saveAddressParts($country, $province, $city, $cityRegion); // /* $lattLong->lat, $lattLong->lng */
-debug( [$country, $province, $city, $cityRegion] );
-debug($data ); exit;
-
-
-        //$result = $this->uploadFile( ['csv_files'] , $this->request->getData('csv_file') );
-        //if (!$result) exit;
-
-        /*
-        return $this->redirect(['action' => 'add',
-            'file_offset' => intval($this->request->getQuery('file_offset')),
-            'filename' => $this->request->getQuery('filename'),
-            'country_id' => $data['countryId'],
-            'province_id' => $data['provinceId'],
-            'city_id' => $data['cityId'],
-            'city_region_id' => $data['cityRegionId'],
-            'lat' => $lattLong->lat,
-            'lng' => $lattLong->lng
-        ]);
-*/
-
-        /*
-    'countryId' => (int) 5,
-	'provinceId' => (int) 11,
-	'provinceRegionId' => (int) 0,
-	'cityId' => (int) 82,
-	'cityRegionId' => (int) 31
-         */
-
 
     }
 
+
+    /*
+     * Lookup the check code, if found, return the associated venueId
+     */
+    private function getCheckTable($checkCode = 0) {
+        $this->loadModel('VenueChecks');
+
+        $query = $this->VenueChecks->find('all')
+            ->where(['check_number' => $checkCode])
+            ->limit(1);
+
+        $row = $query->first();
+
+        //debug( $row);
+
+        if ( $row) {
+            $data = json_decode( $row['update_json'] );
+
+            $venueId = intval($data->venueId); //debug($venueId);
+
+            return $venueId;
+
+        } else {
+            return false;
+        }
+
+    }
+
+    /*
+     * Lookup the checkcode, add the venueId if not set.
+     */
+    private function setCheckTable($checkCode, $venueId ){ //debug( [$checkCode, $venueId]);
+
+        if (!$checkCode) {
+            debug('setCheckTable: NO CHECK-CODE SUPPLIED');
+            return false;
+        }
+
+        $this->loadModel('VenueChecks');
+
+        $query = $this->VenueChecks->find('all')
+            ->where(['check_number' => $checkCode])
+            ->limit(1);
+
+        $venueCheck = $query->first();
+
+        if ($venueCheck) {
+            $data = json_decode( $venueCheck['update_json'] );
+
+            $data->venueId = intval($venueId); // debug($venueId);
+
+            $venueCheck->update_json = json_encode($data);
+
+            $this->VenueChecks->save($venueCheck);
+        } else {
+
+            $venueCheck = $this->VenueChecks->newEntity();
+
+            $venueCheck->check_number = $checkCode;
+
+            $data = json_decode( $venueCheck['update_json'] );
+
+            if ( $data == false ) { $data = (object)[]; }
+
+            $data->venueId = intval($venueId); // debug($venueId);
+
+            $venueCheck->update_json = json_encode($data);
+
+            $this->VenueChecks->save($venueCheck);
+
+        }
+
+    }
+
+    private function saveJsonData( $data, $venueId = null ) {
+
+        $this->loadModel('Venues');
+
+        if (!$venueId) {
+            $venue = $this->Venues->newEntity(); debug('create new');
+        } else{
+            $venue = $this->Venues->findById($venueId)->first(); debug( "load $venueId");
+
+            if ( !$venue ) {
+                $venue = $this->Venues->newEntity(); debug('not found, create new');
+            }
+        }
+
+        $venue->name = $data['name'];
+        $venue->slug = $data['slug'];
+        $venue->address = $data['address'];
+
+        $venue->description = $data['description'];
+
+        $venue->city_id = $data['cityId'];
+
+        if ( $data['cityRegionId'] > 0 ) $venue->city_region_id = $data['cityRegionId'];
+        
+        $venue->province_id = $data['provinceId'];
+        $venue->country_id = $data['countryId'];
+
+        $venue->geo_latt = $data['geoLatt'];
+        $venue->geo_long = $data['geoLong'];
+
+        $venue->hours_sun = $data['hours_sun'];
+        $venue->hours_mon = $data['hours_mon'];
+        $venue->hours_tue = $data['hours_tue'];
+        $venue->hours_wed = $data['hours_wed'];
+        $venue->hours_thu = $data['hours_thu'];
+        $venue->hours_fri = $data['hours_fri'];
+        $venue->hours_sat = $data['hours_sat'];
+
+        $venue->phone = json_encode( ['phone' => $data['phone'] ]);
+        $venue->website = json_encode( ['website' => $data['website'] ]);
+
+        // patch in associated data
+
+        $data = [
+            'venue_types' => $data['venue_types'],
+            'services' => $data['services'],
+            'products' => $data['products']
+        ];
+
+        $venue = $this->Venues->patchEntity($venue, $data, ['validate' => false ]);
+
+        //debug($venue);
+
+
+        $result = $this->Venues->save($venue);
+
+
+
+        if ( !$result) {
+            debug($venue); exit;
+        }
+
+        $venueId =  $result->id;
+
+        return $venueId;
+
+        /*
+         * [
+	'name' => 'Cellular Magician',
+	...
+	'services' => [
+		'_ids' => [
+			(int) 0 => '11',
+			(int) 1 => '6'
+		]
+	],
+	...
+    */
+
+    }
 }
