@@ -1,12 +1,35 @@
-
+<?php // debug($countryList); ?>
 <!-- city-page.html -->
 <?php
-$this->assign('title', $city['seo_title']);
-$this->assign('meta_description', $city['seo_desc']);
+$this->assign('title', $page['seo_title']);
+$this->assign('meta_description', $page['seo_desc']);
 ?>
+
+<style>
+
+    .menu.feature-cities>li>a {
+        display: inline-block;
+        text-align: center;
+        margin-left: 0;
+        padding: 0;
+    }
+
+    .menu.feature-cities.many-countries {
+        justify-content: space-evenly;
+    }
+
+    .menu.feature-cities.single-country li {
+        margin-right: 2rem;
+    }
+
+
+
+
+</style>
 
 <?php if (!empty($city['image_path'])):
     $this->start('inlineCSS'); ?>
+    <!--
     <style>
         .hero {
         //background-image: url(/assets/img/city_vancouver.jpg);
@@ -14,6 +37,7 @@ $this->assign('meta_description', $city['seo_desc']);
             background-position-y: 40%;
         }
     </style>
+    -->
     <?php $this->end(); endif; ?>
 
 <!-- partials/header-inside.html start -->
@@ -24,65 +48,127 @@ $this->assign('meta_description', $city['seo_desc']);
 
 <section>
     <div class="row column">
-        <h1><?php echo h($city['name']) ?>, <?php echo h($city->province['name']) ?> Cell Phone Repair and Parts</h1>
+
+        <?php if ( $countryList['single_county'] == true): ?>
+            <h1>Cities in <?php echo $countryList[0]['name'] ?></h1>
+        <?php else: ?>
+            <h1>Cities List</h1>
+        <?php endif; ?>
+
+
     </div>
 </section>
 
 <!-- latest -->
 <!-- partials/city-featured.html start -->
-<?php $cell = $this->cell('LatestVenues', [ 'city' => $city->id ] ); echo $cell; ?>
+<?php //$cell = $this->cell('LatestVenues', [ 'city' => $city->id ] ); echo $cell; ?>
 
 
 
 <!-- partials/city-featured.html end -->
 
+<?php foreach ($countryList as $country): //debug($country); ?>
 
-<!-- alt neighbouhood section -->
-<?php if (!empty($city->city_regions)): ?>
-    <section class="neighbourhoods-list">
-        <div class="row column">
+    <?php if (empty($country['provinces']) ) continue; // skip over counties with no provinces - probably means no listings ?>
 
-            <div class="card" >
-                <div class="card-divider ">
-                    <h3>Neighbourhoods in <?php echo h($city['name'] . ', ' . $city->country['name'] )?></h3>
-                </div>
+
+<section class="neighbourhoods-list">
+    <div class="row column">
+
+        <div class="card" >
+
+            <div class="card-divider ">
+                <h3><?php echo '<a href="/cities-list/' . $country['slug']. '">' . h($country['name']);?></a></h3>
+            </div>
+
+
+            <?php if ( $countryList['single_county'] == true): ?>
+
                 <div class="card-section text-left">
+
+                    <?php foreach( $country['provinces'] as $province ):?>
+
+                        <hr>
+                        <h4><?php echo $province['name'] ?></h4>
+
+
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <ul class="menu expanded align-left feature-cities single-country">
+                                    <?php foreach ($province['featured'] as $i => $row): ?>
+                                        <li>
+                                            <?php echo '<a href="/city/' . $row['slug']. '">' .
+                                                '<img class="thumbnail" src="' .  $row['image_path'] . '" alt="'.  h($row['name']) . '"/><br>'
+                                                . h($row['name']). '</a>'; ?></li>
+                                    <?php endforeach;?>
+                                </ul>
+
+                                <?php if ( isset($province['big_cities']) ):?>
+                                    <ul class="menu expanded align-left">
+                                        <?php foreach ($province['big_cities'] as $i => $row): ?>
+                                            <li><?php echo '<a href="/city/' . $row['slug']. '">' . h($row['name']). '</a>'; ?></li>
+                                        <?php endforeach;?>
+                                    </ul>
+                                <?php endif;?>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <ul class="menu expanded align-left">
+                                    <?php foreach ($province['cities'] as $i => $row): ?>
+                                        <li><?php echo '<a href="/city/' . $row['slug']. '">' . h($row['name']). '</a>'; ?></li>
+                                    <?php endforeach;?>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php endforeach; // end loop though proince ?>
+
+                </div>
+
+            <?php else: ?>
+
+                <div class="card-section text-left">
+
+                    <?php // foreach( $country['featured'] as $featured ): debug($featured); ?>
+
+
 
                     <div class="row">
                         <div class="large-12 columns">
-                            <ul class="menu expanded align-left">
-                                <?php foreach( $city->city_regions as $region): ?>
-                                    <li><a href="/neighbourhood/<?php echo $region['slug'];?>">
-                                            <?php if (!empty($region['display_name'])) {
-                                                echo h($region['display_name']);
-                                            } else {
-                                                echo h($region['name']);
-                                            }?>
-                                        </a>
-                                    </li>
-                                <?php endforeach; ?>
+                            <ul class="menu expanded align-left feature-cities many-countries">
+                            <?php foreach ($country['featured'] as $row ): ?>
+                                <li>
+                                    <?php echo '<a href="/city/' . $row['slug']. '">' .
+                                        '<img class="thumbnail" src="' .  $row['image_path'] . '" alt="'.  h($row['name']) . '"/><br>'
+                                        . h($row['name']). '</a>'; ?></li>
+                            <?php endforeach;?>
                             </ul>
+
+
+
                         </div>
                     </div>
 
+                    <?php // endforeach; // end loop though proince ?>
+
                 </div>
-            </div>
 
-        </div>
-    </section>
-
-    <?php echo $this->element('adblockResponsive'); ?>
-
-<?php endif;?>
+            <?php endif; // check if single/all countries  ?>
 
 
+        </div> <!-- end card -->
+
+    </div>
+</section>
 
 
 
-<!-- store types, e.g. repair, parts, training schools, etc. -->
-<?php $cell = $this->cell('CityServices', ['city' => $city->id, 'cityName' => $city['name'], 'citySlug' => $city['slug'] ]); echo $cell; ?>
-<!-- store types, e.g. repair, parts, training schools, etc. -->
-<?php $cell = $this->cell('CityChains', ['city' => $city->id, 'cityName' => $city['name'], 'citySlug' => $city['slug'] ]); echo $cell; ?>
+
+<?php endforeach; ?>
+
+
+
 
 <?php echo $this->element('adblockResponsive'); ?>
 

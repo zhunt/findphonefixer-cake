@@ -96,6 +96,6 @@
 
     </div>
     <div class="row column text-center">
-        <b><a href="#">More</a></b>
+        <b><a href="/cities-list/">More</a></b>
     </div>
 </div>

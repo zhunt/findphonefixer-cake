@@ -28,6 +28,8 @@ $cakeDescription = 'FindPhoneFixer.com - find your phone repair spot.';
     <?= $this->Html->meta('icon') ?>
     <?= $this->Html->meta('description', trim($this->fetch('meta_description')) ); ?>
 
+    <link rel='dns-prefetch' href='//fonts.googleapis.com' />
+
     <?php // $this->Html->css('base.css') ?>
     <?php // $this->Html->css('cake.css') ?>
 
@@ -60,7 +62,7 @@ $cakeDescription = 'FindPhoneFixer.com - find your phone repair spot.';
             var index = client.initIndex("<?php echo Configure::read('algolia.indexName'); ?>");
 
 
-            //initialize autocomplete on search input (ID selector must match)
+            // initialize auto-complete on search input (ID selector must match)
             $('#aa-search-input').autocomplete(
                 {hint: false}, [
                     {

@@ -15,7 +15,7 @@ class LandingPageController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow( ['home', 'city', 'filterService']); // make these pages public
+        $this->Auth->allow( ['home', 'city', 'filterService', 'citiesList']); // make these pages public
     }
 
     public function home()
@@ -50,92 +50,121 @@ class LandingPageController extends AppController
     /*
      * Display list of cities, optionally filter on country
      */
-    public function citiesList( $country_slug = null){
+    public function citiesList( $country_slug = null)
+    {
 
-        debug($country_slug);
-
+        $this->loadModel('Countries');
+        $this->loadModel('Provinces');
         $this->loadModel('Cities');
 
         if ($country_slug) {
-
+            // if set, get the country's ID
             $this->loadModel('Countries');
+            $country = $this->Countries->find('all', ['fields' => ['id', 'name', 'slug']])->where(['Countries.slug' => $country_slug])->first();
 
-            $countryId = $this->Countries->find('all', ['fields' => 'id'])->where(['Countries.slug' => $country_slug])->first()->id;
+            $countryId = $country->id;
 
-            debug($countryId);
+            if (!$countryId) {
+                $countryId = false;
+            } else {
+                $country = $country->toArray();
+            }
 
-        }
-        // get list of the home-page featured cities
+            $countryList[] = $this->getCitiesInCountry($countryId);
 
-        $conditions = ['Cities.flag_show_homepage' => true];
+            $countryList['single_county'] = true;
 
-        if ($countryId > 0) {
-            $conditions = array_merge( $conditions, ['Cities.country_id' => $countryId]);
-        }
+        } else {
 
-        $featuredCities = $this->Cities->find('all', [ 'fields' => ['id', 'name', 'slug', 'display_name', 'image_path'] ] )
-            ->where([$conditions])
-            ->order(['Cities.name']);
+            $countries = $this->Countries->find('list');
+            foreach ($countries as $id =>$row) {
+                $countryList[] = $this->getCitiesInCountry($id);
+            }
 
-        debug( $featuredCities->toArray() );
-
-        // next get list of provinces in a country and then the citis in each province that are not featured
-
-        $citiesInPrvince = $this->Countries->find('all')
-            ->where([ 'Cities.flag_show_homepage' => false ])
-            ->contain(['Provinces', 'Cities']);
-
-        debug( $citiesInPrvince->toArray() );
-
-
-        /*
-         * 'id' => (int) 88,
-		'name' => 'Vancouver',
-		'slug' => 'vancouver',
-		'display_name' => null,
-		'seo_title' => 'Cell Phone Repair Vancouver',
-		'seo_desc' => 'Find places to repair your iPhone, cell phone or other mobile phone in Vancouver, Canada. ',
-		'image_path' => '/assets/img/city_vancouver.jpg',
-         * */
-
-
-
-/*
-
-
-
-            $featured = $this->Cities->find('all')
-                ->where( [ 'Cities.country_id' => 1, 'Cities.flag_show_homepage' => true ] )
-                ->order(['Cities.name']);
-
-            debug($featured->toArray() );
-
-            // get list of non-featured cities in country.
-
-            // order them into groups by province, alphabetically
-
-
+            $countryList['single_county'] = false;
 
         }
-        $city = $this->Cities->findBySlug($slug)
-            ->contain([
-                'Countries' => ['fields' => ['name'] ],
-                'Provinces' => ['fields' => ['name'] ],
-                'CityRegions' => [ 'sort' => 'display_name, name', 'fields' => [ 'city_id', 'name', 'display_name', 'slug'] ]
-            ])
-            ->first();
-
-        debug($city->toArray() );
-
-*/
+           // debug($countryList);
         // TODO: make services, chains dependent on what venues in have assigned to them
+        $city = [];
 
-        $this->set(compact('city'));
-        $this->set('_serialize', ['city']);
+        $page = [];
+        $page['seo_title'] = 'Cities List';
+        $page['seo_desc'] = 'Big list of cities';
 
-
+        $this->set(compact( 'countryList','page'));
+        $this->set('_serialize', ['countryList']);
 
     }
+
+
+    /* private functions used by citiesList() */
+
+    private function getCitiesInCountry($countryId) {
+    // if countryid,
+    // - get list of all the provinces
+    // - get list of all the cities
+    // -- break list of cities down into featured cities, big cities and regular cities, order alphabetically
+    // -- attach these to provinces array
+    // - attach provinces to country
+    // if not countryid, then do above but for all countries
+
+    if ($countryId) {
+
+        $country = $this->Countries->find('all', ['fields' => ['id', 'name', 'slug']])->where(['Countries.id' => $countryId])->hydrate(false)->first();
+
+
+
+        $provincesList = $this->Provinces->find('all', ['fields' => ['id', 'slug', 'name']])
+            ->where(['country_id' => $countryId])
+            ->order('name ASC')
+            ->hydrate(false)
+            ->toArray();
+
+        $country['provinces'] = $provincesList;
+
+        $featuredCities = $this->Cities->find('all', ['fields' => ['id', 'name', 'display_name', 'slug', 'image_path']])
+            ->where(['country_id' => $countryId, 'flag_show_homepage' => true])
+            ->hydrate(false)
+            ->order('Cities.name')
+            ->toArray();
+
+        if (!empty($featuredCities)) {
+            $country['featured'] = $featuredCities;
+        } else {
+            $country['featured'] = false;
+        }
+
+
+        foreach ($provincesList as $id => $row) {
+
+            $city = $this->Cities->find('all', ['fields' => ['id', 'name', 'display_name', 'slug', 'image_path', 'flag_show_homepage', 'flag_big_city']])
+                ->where(['country_id' => $countryId, 'province_id' => $row['id']])
+                ->hydrate(false)
+                ->order('Cities.name')
+                ->toArray();
+
+
+            foreach ($city as $cityId => $cityRow) {
+                if ($cityRow['flag_big_city'] == true) {
+                    $country['provinces'][$id]['big_cities'][] = $cityRow;
+                } else if ($cityRow['flag_show_homepage']) {
+                    $country['provinces'][$id]['featured'][] = $cityRow;
+                } else {
+                    $country['provinces'][$id]['cities'][] = $cityRow;
+                }
+            }
+
+
+        }
+
+    }
+
+    return($country);
+}
+
+
+
 
 
     public function filterService( $filterType = null, $slug = null, $city = null) {
