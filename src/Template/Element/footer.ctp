@@ -29,9 +29,12 @@
             </div>
             <div class="column">
                 <ul class="menu marketing-site-footer-bottom-links">
+                    <li><a href="/pages/about_us/">About</a></li>
+                    <li><a href="/blog/">Blog</a></li>
+
                     <!--
                     <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
+                    <li><a href="/pages/about_us/">About</a></li>
                     <li><a href="#">Services</a></li>
                     <li><a href="#">Works</a></li>
                     <li><a href="#">News</a></li>

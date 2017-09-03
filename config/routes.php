@@ -54,6 +54,9 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/city/:slug', ['controller' => 'LandingPage', 'action' => 'city' ], [ 'pass' => ['slug'] ]);
 
+    // display list of cities, optionally by country
+    $routes->connect('/cities-list/*', ['controller' => 'LandingPage', 'action' => 'cities_list' ], [ 'pass' => ['slug'] ]);
+
     $routes->connect('/city_venues/:slug', ['controller' => 'Cities', 'action' => 'filterVenues' ], [ 'pass' => ['slug'] ]);
 
     $routes->connect('/neighbourhood/:slug', ['controller' => 'CityRegions', 'action' => 'filterVenues' ], [ 'pass' => ['slug'] ]);

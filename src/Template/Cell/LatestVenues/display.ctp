@@ -31,8 +31,9 @@
                                 <?php endif; ?>
                             </h4>
                         </div>
+                        <?php if ( !empty($this->Venue->getProfileImage($venue) ) ): ?>
                         <img src="<?php echo $this->Venue->getProfileImage($venue) ?>" title="Photo: copyright owner">
-
+                        <?php endif; ?>
                         <div class="card-section text-center">
                             <p>
                                 <?php echo h($venue->prefered_address);?>

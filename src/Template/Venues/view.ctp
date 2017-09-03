@@ -76,10 +76,10 @@ $this->assign('meta_description', $venue['seo_desc']);
 
     <div class="columns small-12 medium-4 flex-container ">
         <div class="card profile-picture">
-            <img src="<?php echo $this->Venue->getProfileImage($venue) ?>" title="Photo: copyright owner">
+            <img src="<?php echo $this->Venue->getProfileImage($venue, ['force_default_image' => true ]) ?>" title="Photo: copyright owner">
             <div class="card-section text-center">
                 <p>
-                    <small><i>Photo: provided by <?php echo h($venue['name']);?></i></small>
+                    <small><i>Photo: <?php echo h($venue['name']);?></i></small>
                 </p>
                 <p><b><?php echo h($venue->prefered_address);?></b></p>
                 <p><b><?php echo h($this->Venue->getFirstPhonenumber($venue));?></b></p>
@@ -169,7 +169,12 @@ $this->assign('meta_description', $venue['seo_desc']);
                 <hr>
                 <div class="row unstack-medium">
                     <div class="column">
-                        <i>Last updated: <?php echo $this->Time->format($venue->last_update); ?></i>
+                        <i>Last updated:
+                            <?php if ( !empty($venue->last_update) ) {
+                                echo $this->Time->format($venue->last_update);
+                            } else {
+                                echo $this->Time->format($venue->created);
+                            } ?></i>
                     </div>
                     <div class="column text-right shrink">
                         <b><a href="#" data-open="reportErrorModal">Report Error</a></b>

@@ -1022,7 +1022,8 @@ class BatchVenuesController extends AppController
         $venue->city_id = $data['cityId'];
 
         if ( $data['cityRegionId'] > 0 ) $venue->city_region_id = $data['cityRegionId'];
-        
+
+        if ( isset($data['chain_id']) ) $venue->chain_id = $data['chain_id'];
         $venue->province_id = $data['provinceId'];
         $venue->country_id = $data['countryId'];
 

@@ -47,6 +47,97 @@ class LandingPageController extends AppController
     }
 
 
+    /*
+     * Display list of cities, optionally filter on country
+     */
+    public function citiesList( $country_slug = null){
+
+        debug($country_slug);
+
+        $this->loadModel('Cities');
+
+        if ($country_slug) {
+
+            $this->loadModel('Countries');
+
+            $countryId = $this->Countries->find('all', ['fields' => 'id'])->where(['Countries.slug' => $country_slug])->first()->id;
+
+            debug($countryId);
+
+        }
+        // get list of the home-page featured cities
+
+        $conditions = ['Cities.flag_show_homepage' => true];
+
+        if ($countryId > 0) {
+            $conditions = array_merge( $conditions, ['Cities.country_id' => $countryId]);
+        }
+
+        $featuredCities = $this->Cities->find('all', [ 'fields' => ['id', 'name', 'slug', 'display_name', 'image_path'] ] )
+            ->where([$conditions])
+            ->order(['Cities.name']);
+
+        debug( $featuredCities->toArray() );
+
+        // next get list of provinces in a country and then the citis in each province that are not featured
+
+        $citiesInPrvince = $this->Countries->find('all')
+            ->where([ 'Cities.flag_show_homepage' => false ])
+            ->contain(['Provinces', 'Cities']);
+
+        debug( $citiesInPrvince->toArray() );
+
+
+        /*
+         * 'id' => (int) 88,
+		'name' => 'Vancouver',
+		'slug' => 'vancouver',
+		'display_name' => null,
+		'seo_title' => 'Cell Phone Repair Vancouver',
+		'seo_desc' => 'Find places to repair your iPhone, cell phone or other mobile phone in Vancouver, Canada. ',
+		'image_path' => '/assets/img/city_vancouver.jpg',
+         * */
+
+
+
+/*
+
+
+
+            $featured = $this->Cities->find('all')
+                ->where( [ 'Cities.country_id' => 1, 'Cities.flag_show_homepage' => true ] )
+                ->order(['Cities.name']);
+
+            debug($featured->toArray() );
+
+            // get list of non-featured cities in country.
+
+            // order them into groups by province, alphabetically
+
+
+
+        }
+        $city = $this->Cities->findBySlug($slug)
+            ->contain([
+                'Countries' => ['fields' => ['name'] ],
+                'Provinces' => ['fields' => ['name'] ],
+                'CityRegions' => [ 'sort' => 'display_name, name', 'fields' => [ 'city_id', 'name', 'display_name', 'slug'] ]
+            ])
+            ->first();
+
+        debug($city->toArray() );
+
+*/
+        // TODO: make services, chains dependent on what venues in have assigned to them
+
+        $this->set(compact('city'));
+        $this->set('_serialize', ['city']);
+
+
+
+    }
+
+
     public function filterService( $filterType = null, $slug = null, $city = null) {
         // debug( $filterType) ; debug( $slug );
 

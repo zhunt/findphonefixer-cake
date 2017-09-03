@@ -87,7 +87,16 @@ class VenueHelper extends Helper
         }
     }
 
-    public function getProfileImage($venue) {
+    /*
+     * params ['force_default_image' => false ]
+     */
+    public function getProfileImage($venue, $params = null ) {
+
+        $defultImage = '';
+        if ( isset($params['force_default_image']) && $params['force_default_image'] == true ) {
+            $defultImage = '/assets/img/placeholder-555.png';
+        }
+
         if (!empty($venue->photos)) {
             $imageFile = json_decode($venue->photos);
             if (!empty($imageFile->image1)) {
@@ -99,11 +108,11 @@ class VenueHelper extends Helper
                     // TODO: need check if image exits, seems to presist afte deletion
                     return cloudinary_url($imageFilename, [ "height"=>415, "quality"=>"auto", "width"=>555, "crop"=>"fill", "fetch_format"=>"auto", "cloud_name" => Configure::read('cloudinary.name') ] );
                 } else {
-                    return '/assets/img/placeholder-555.png';
+                    return $defultImage; // '/assets/img/placeholder-555.png';
                 }
             }
         } else {
-            return '/assets/img/placeholder-555.png'; // title="Photo: copyright owner">';
+            return  $defultImage; // '/assets/img/placeholder-555.png';
         }
 
     }

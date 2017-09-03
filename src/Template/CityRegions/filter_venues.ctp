@@ -40,10 +40,16 @@ if ( !empty($this->request->getQuery('page') ) ) {
         <div class="small-12 column">
             <a href="/venue/<?php echo $venue->slug; ?>">
                 <div class="card card-product horizontal">
+
+                <?php if ( !empty($this->Venue->getProfileImage($venue) ) ): ?>
                     <div class="card-section large-2 small-4 medium-4">
-                        <img class="" src="/assets/img/placeholder-555.png" alt="">
+                        <img src="<?php echo $this->Venue->getProfileImage($venue) ?>" title="Photo: copyright owner">
                     </div>
                     <div class="card-section medium-8 small-8">
+                <?php else: ?>
+                    <div class="card-section small-12">
+                <?php endif; ?>
+
                         <h4><?php echo h( $venue->name ); ?>
                             <?php if ($venue->sub_name) { echo '<small>' . h($venue->sub_name) . '</small>'; } ?>
                         </h4>
