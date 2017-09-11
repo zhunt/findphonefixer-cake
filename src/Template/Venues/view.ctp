@@ -23,8 +23,7 @@ $this->assign('meta_description', $venue['seo_desc']);
                     <nav aria-label="You are here:" role="navigation" class="">
                         <ul class="breadcrumbs">
                             <li><a href="/">Home</a></li>
-                            <!-- <li><a href="/country/<?php echo $venue->country->slug;?>"><?php echo h($venue->country->name); ?></a></li> -->
-                            <li><?php echo h($venue->country->name); ?></li>
+                            <li><a href="/cities-list/<?php echo $venue->country->slug;?>"><?php echo h($venue->country->name); ?></a></li>
                             <li><a href="/city/<?php echo $venue->city->slug;?>"><?php echo h($venue->city->name); ?></a></li>
                             <?php
                                 if (!empty($venue->city_region->name )){
@@ -177,7 +176,7 @@ $this->assign('meta_description', $venue['seo_desc']);
                             } ?></i>
                     </div>
                     <div class="column text-right shrink">
-                        <b><a href="#" data-open="reportErrorModal">Report Error</a></b>
+                        <b><a href="/contact-form/report-venue-error/<?php echo $venue->slug?>" data-open="reportErrorModal">Report Error</a></b>
                     </div>
                 </div>
             </div>

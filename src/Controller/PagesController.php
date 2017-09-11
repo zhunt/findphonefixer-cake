@@ -29,6 +29,14 @@ use Cake\View\Exception\MissingTemplateException;
 class PagesController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow( ['display']); // make these pages public
+    }
+
+    // http://localhost:8085/pages/about_us/
+
     /**
      * Displays a view
      *

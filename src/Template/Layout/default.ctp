@@ -43,8 +43,20 @@ $cakeDescription = 'FindPhoneFixer.com - find your phone repair spot.';
     <!-- inline CSS code -->
     <?php echo $this->fetch('inlineCSS'); ?>
 
+    <style>
+        .message { text-align: center; background-color: #3adb76; color: white; bold; font-size: 1.5rem}
+
+        .message.success { text-align: center; background-color: #3adb76; color: white; bold; font-size: 1.5rem}
+        .message.error { background-color: red}
+
+        .hidden { display: none}
+
+    </style>
+
 </head>
 <body>
+
+<?= $this->Flash->render() ?>
 
 <?= $this->fetch('content') ?>
 
